@@ -1,6 +1,8 @@
 using Usuarios.API.Extensions;
 using Usuarios.Application;
 using Usuarios.Infrastructure;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,29 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Configuración de Google OAuth
+builder.Services
+    .AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme =
+            CookieAuthenticationDefaults.AuthenticationScheme;
+
+        options.DefaultSignInScheme =
+            CookieAuthenticationDefaults.AuthenticationScheme;
+
+        options.DefaultChallengeScheme =
+            GoogleDefaults.AuthenticationScheme;
+    })
+    .AddCookie()
+    .AddGoogle(options =>
+    {
+        options.ClientId =
+            builder.Configuration["Authentication:Google:ClientId"]!;
+
+        options.ClientSecret =
+            builder.Configuration["Authentication:Google:ClientSecret"]!;
+    });
+
 var app = builder.Build();
 
 app.UseExceptionHandler();
@@ -25,6 +50,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// For Google OAuth
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseHttpsRedirection();
 app.MapControllers();
