@@ -5,16 +5,16 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace Usuarios.Infrastructure.Migrations
+namespace Usuarios.Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class AddUsuarioSeed : Migration
+    public partial class InitialCreateAndSeedData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Usuario",
+                name: "Usuarios",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -28,11 +28,11 @@ namespace Usuarios.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Usuario", x => x.Id);
+                    table.PrimaryKey("PK_Usuarios", x => x.Id);
                 });
 
             migrationBuilder.InsertData(
-                table: "Usuario",
+                table: "Usuarios",
                 columns: new[] { "Id", "Apellido", "Email", "FechaCreacion", "FotoUrl", "GoogleId", "Nombre", "UltimoAcceso" },
                 values: new object[,]
                 {
@@ -41,8 +41,8 @@ namespace Usuarios.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Usuario_GoogleId",
-                table: "Usuario",
+                name: "IX_Usuarios_GoogleId",
+                table: "Usuarios",
                 column: "GoogleId",
                 unique: true);
         }
@@ -51,7 +51,7 @@ namespace Usuarios.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Usuario");
+                name: "Usuarios");
         }
     }
 }

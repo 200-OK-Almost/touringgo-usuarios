@@ -12,6 +12,7 @@ public class ApplicationDbContext : DbContext
 
     }
     // Registrar entidades
+    public DbSet<Usuario> Usuarios { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

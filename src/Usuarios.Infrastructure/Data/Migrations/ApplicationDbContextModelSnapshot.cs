@@ -8,7 +8,7 @@ using Usuarios.Infrastructure.Data;
 
 #nullable disable
 
-namespace Usuarios.Infrastructure.Migrations
+namespace Usuarios.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -58,7 +58,7 @@ namespace Usuarios.Infrastructure.Migrations
                     b.HasIndex("GoogleId")
                         .IsUnique();
 
-                    b.ToTable("Usuario");
+                    b.ToTable("Usuarios");
 
                     b.HasData(
                         new

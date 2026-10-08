@@ -9,11 +9,11 @@ using Usuarios.Infrastructure.Data;
 
 #nullable disable
 
-namespace Usuarios.Infrastructure.Migrations
+namespace Usuarios.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20261008155138_AddUsuarioSeed")]
-    partial class AddUsuarioSeed
+    [Migration("20261008201952_InitialCreateAndSeedData")]
+    partial class InitialCreateAndSeedData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,7 +61,7 @@ namespace Usuarios.Infrastructure.Migrations
                     b.HasIndex("GoogleId")
                         .IsUnique();
 
-                    b.ToTable("Usuario");
+                    b.ToTable("Usuarios");
 
                     b.HasData(
                         new
