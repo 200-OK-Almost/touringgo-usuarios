@@ -4,9 +4,9 @@ WORKDIR /src
 
 COPY . .
 
-RUN dotnet restore "Service.sln"
+RUN dotnet restore "Usuarios.sln"
 
-RUN dotnet publish "src/Service.API/Service.API.csproj" \
+RUN dotnet publish "src/Usuarios.API/Usuarios.API.csproj" \
     -c Release \
     -o /app/publish \
     --no-restore
@@ -20,4 +20,4 @@ COPY --from=build /app/publish .
 
 EXPOSE 8080
 
-ENTRYPOINT ["dotnet", "Service.API.dll"]
+ENTRYPOINT ["dotnet", "Usuarios.API.dll"]

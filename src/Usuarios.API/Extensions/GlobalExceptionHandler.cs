@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Service.Domain.Exceptions;
+using Usuarios.Domain.Exceptions;
 
-namespace Service.API.Extensions;
+namespace Usuarios.API.Extensions;
 
 public class GlobalExceptionHandler : IExceptionHandler
 {

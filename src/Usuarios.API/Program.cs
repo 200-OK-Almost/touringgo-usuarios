@@ -1,6 +1,6 @@
-using Service.API.Extensions;
-using Service.Application;
-using Service.Infrastructure;
+using Usuarios.API.Extensions;
+using Usuarios.Application;
+using Usuarios.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
