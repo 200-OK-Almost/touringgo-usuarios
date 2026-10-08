@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Usuarios.Application.Interfaces;
 using Usuarios.Infrastructure.Data;
+using Usuarios.Infrastructure.Repositories;
 
 namespace Usuarios.Infrastructure;
 
@@ -16,6 +18,7 @@ public static class DependencyInjection
                 configuration.GetConnectionString("DefaultConnection")));
 
         // Registrar repositorios
+        services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
         return services;
     }
