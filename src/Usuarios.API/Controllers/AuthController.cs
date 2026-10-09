@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Usuarios.Application.DTOs;
 using Usuarios.Application.Interfaces;
@@ -12,6 +13,14 @@ namespace SubastaYa.API.Controllers
     [Route("auth")]
     public class AuthController : ControllerBase
     {
+        private readonly IUsuarioService _usuarioService;
+
+        public AuthController(IUsuarioService usuarioService)
+        {
+            _usuarioService = usuarioService;
+        }
+
+
         [HttpGet]
         [HttpGet("google")]
         public IActionResult GoogleLogin()
@@ -44,7 +53,20 @@ namespace SubastaYa.API.Controllers
                 claim.Value
             });
 
-            return Ok(claims);
+            GoogleUsuarioInfoDTO dto = new GoogleUsuarioInfoDTO
+            {
+                GoogleId = result.Principal.FindFirstValue(ClaimTypes.NameIdentifier),
+                Email = result.Principal.FindFirstValue(ClaimTypes.Email),
+                Nombre = result.Principal.FindFirstValue(ClaimTypes.GivenName),
+                Apellido = result.Principal.FindFirstValue(ClaimTypes.Surname),
+
+                // La imagen de perfil no esta disponible.
+                //FotoUrl = result.Principal.FindFirstValue(ClaimTypes.Picture)
+            };
+
+            var usuario = await _usuarioService.GetOrCreateUsuarioGoogleAsync(dto);
+
+            return Ok(usuario);
         }
     }
 }
