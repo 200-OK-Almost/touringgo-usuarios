@@ -21,7 +21,6 @@ namespace Usuarios.Infrastructure.Data.Migrations
                     Email = table.Column<string>(type: "text", nullable: false),
                     GoogleId = table.Column<string>(type: "text", nullable: false),
                     Nombre = table.Column<string>(type: "text", nullable: false),
-                    Apellido = table.Column<string>(type: "text", nullable: false),
                     FotoUrl = table.Column<string>(type: "text", nullable: true),
                     FechaCreacion = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UltimoAcceso = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
@@ -33,11 +32,11 @@ namespace Usuarios.Infrastructure.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Usuarios",
-                columns: new[] { "Id", "Apellido", "Email", "FechaCreacion", "FotoUrl", "GoogleId", "Nombre", "UltimoAcceso" },
+                columns: new[] { "Id", "Email", "FechaCreacion", "FotoUrl", "GoogleId", "Nombre", "UltimoAcceso" },
                 values: new object[,]
                 {
-                    { new Guid("11111111-1111-1111-1111-111111111111"), "Test", "usuario@test.com", new DateTimeOffset(new DateTime(2026, 10, 8, 12, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, "user-test-google-id", "Usuario", new DateTimeOffset(new DateTime(2026, 10, 8, 12, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)) },
-                    { new Guid("11111111-1111-1111-1111-111111111112"), "Test", "dev@test.com", new DateTimeOffset(new DateTime(2026, 10, 8, 12, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, "dev-test-google-id", "Dev", new DateTimeOffset(new DateTime(2026, 10, 8, 12, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)) }
+                    { new Guid("11111111-1111-1111-1111-111111111111"), "usuario@test.com", new DateTimeOffset(new DateTime(2026, 10, 8, 12, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, "user-test-google-id", "Usuario Test", new DateTimeOffset(new DateTime(2026, 10, 8, 12, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)) },
+                    { new Guid("11111111-1111-1111-1111-111111111112"), "dev@test.com", new DateTimeOffset(new DateTime(2026, 10, 8, 12, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), null, "dev-test-google-id", "Dev Test", new DateTimeOffset(new DateTime(2026, 10, 8, 12, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)) }
                 });
 
             migrationBuilder.CreateIndex(

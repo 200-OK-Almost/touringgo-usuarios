@@ -55,10 +55,9 @@ namespace SubastaYa.API.Controllers
 
             GoogleUsuarioInfoDTO dto = new GoogleUsuarioInfoDTO
             {
-                GoogleId = result.Principal.FindFirstValue(ClaimTypes.NameIdentifier),
+                GoogleId = result.Principal.FindFirstValue(ClaimTypes.NameIdentifier)!,
                 Email = result.Principal.FindFirstValue(ClaimTypes.Email),
-                Nombre = result.Principal.FindFirstValue(ClaimTypes.GivenName),
-                Apellido = result.Principal.FindFirstValue(ClaimTypes.Surname),
+                Nombre = result.Principal.FindFirstValue(ClaimTypes.Name),
 
                 // La imagen de perfil no esta disponible.
                 //FotoUrl = result.Principal.FindFirstValue(ClaimTypes.Picture)

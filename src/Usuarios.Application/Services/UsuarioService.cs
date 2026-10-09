@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
@@ -36,7 +36,6 @@ namespace Usuarios.Application.Services
                     GoogleId = dto.GoogleId,
                     Email = dto.Email!,
                     Nombre = dto.Nombre!,
-                    Apellido = dto.Apellido!,
                     FotoUrl = dto.FotoUrl
                 };
 
@@ -70,7 +69,6 @@ namespace Usuarios.Application.Services
                 Email = u.Email,
                 GoogleId = u.GoogleId,
                 Nombre = u.Nombre,
-                Apellido = u.Apellido,
                 FotoUrl = u.FotoUrl,
                 FechaCreacion = u.FechaCreacion,
                 UltimoAcceso = u.UltimoAcceso,

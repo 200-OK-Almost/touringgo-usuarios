@@ -12,7 +12,7 @@ using Usuarios.Infrastructure.Data;
 namespace Usuarios.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20261008201952_InitialCreateAndSeedData")]
+    [Migration("20261009155101_InitialCreateAndSeedData")]
     partial class InitialCreateAndSeedData
     {
         /// <inheritdoc />
@@ -30,10 +30,6 @@ namespace Usuarios.Infrastructure.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
-
-                    b.Property<string>("Apellido")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -67,21 +63,19 @@ namespace Usuarios.Infrastructure.Data.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
-                            Apellido = "Test",
                             Email = "usuario@test.com",
                             FechaCreacion = new DateTimeOffset(new DateTime(2026, 10, 8, 12, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             GoogleId = "user-test-google-id",
-                            Nombre = "Usuario",
+                            Nombre = "Usuario Test",
                             UltimoAcceso = new DateTimeOffset(new DateTime(2026, 10, 8, 12, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111112"),
-                            Apellido = "Test",
                             Email = "dev@test.com",
                             FechaCreacion = new DateTimeOffset(new DateTime(2026, 10, 8, 12, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             GoogleId = "dev-test-google-id",
-                            Nombre = "Dev",
+                            Nombre = "Dev Test",
                             UltimoAcceso = new DateTimeOffset(new DateTime(2026, 10, 8, 12, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
