@@ -1,6 +1,8 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using Usuarios.Application.DTOs;
 using Usuarios.Application.Interfaces;
 namespace SubastaYa.API.Controllers
@@ -27,6 +29,23 @@ namespace SubastaYa.API.Controllers
         public async Task<ActionResult<UsuarioDTO>> GetUsuarioById(Guid id)
         {
             var usuario = await _usuarioService.GetUsuarioById(id);
+            return Ok(usuario);
+        }
+
+        [Authorize]
+        [HttpGet("me")]
+        public async Task<IActionResult> GetCurrentUser()
+        {
+            var userIdValue = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!Guid.TryParse(userIdValue, out var userId))
+                return Unauthorized();
+
+            var usuario = await _usuarioService.GetUsuarioById(userId);
+
+            if (usuario is null)
+                return NotFound();
+
             return Ok(usuario);
         }
     }
