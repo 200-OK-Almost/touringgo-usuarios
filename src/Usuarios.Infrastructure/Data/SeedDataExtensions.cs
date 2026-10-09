@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Usuarios.Domain.Entities;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -15,9 +15,8 @@ namespace SubastaYa.Data
                 new Usuario 
                 { 
                     Id = Guid.Parse("11111111-1111-1111-1111-111111111111"), 
-                    Nombre = "Usuario",
+                    Nombre = "Usuario Test",
                     GoogleId = "user-test-google-id",
-                    Apellido = "Test",
                     Email = "usuario@test.com", 
                     FechaCreacion = baseDate,
                     UltimoAcceso = baseDate,
@@ -25,9 +24,8 @@ namespace SubastaYa.Data
                 new Usuario
                 {
                     Id = Guid.Parse("11111111-1111-1111-1111-111111111112"),
-                    Nombre = "Dev",
+                    Nombre = "Dev Test",
                     GoogleId = "dev-test-google-id",
-                    Apellido = "Test",
                     Email = "dev@test.com",
                     FechaCreacion = baseDate,
                     UltimoAcceso = baseDate,

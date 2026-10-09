@@ -8,6 +8,7 @@ using Usuarios.Application.DTOs;
 using Usuarios.Application.Interfaces;
 using Usuarios.Domain.Entities;
 using Usuarios.Infrastructure.Data;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Usuarios.Infrastructure.Repositories
 {
@@ -18,35 +19,36 @@ namespace Usuarios.Infrastructure.Repositories
         {
             _context = context;
         }
-        public async Task<ICollection<UsuarioDTO>> GetAllUsuarios()
+        public async Task<ICollection<Usuario>> GetAllUsuarios()
         {
-            return await _context.Usuarios
-                .Select(u => MapUsuarioDTO(u)).ToListAsync();
+            return await _context.Usuarios.ToListAsync();
         }
 
-        public async Task<UsuarioDTO?> GetUsuarioById(Guid id)
+        public async Task<Usuario?> GetUsuarioById(Guid id)
         {
             return await _context.Usuarios
                 .Where(u => u.Id == id)
-                .Select(u => MapUsuarioDTO(u))
                 .FirstOrDefaultAsync();
         }
 
-        // --- Helpers --- 
-
-        private static UsuarioDTO MapUsuarioDTO(Usuario u)
+        public async Task<Usuario?> GetUsuarioByGoogleId(string googleId)
         {
-            return new UsuarioDTO
-            {
-                Id = u.Id,
-                Email = u.Email,
-                GoogleId = u.GoogleId,
-                Nombre = u.Nombre,
-                Apellido = u.Apellido,
-                FotoUrl = u.FotoUrl,
-                FechaCreacion = u.FechaCreacion,
-                UltimoAcceso = u.UltimoAcceso,
-            };
+            return await _context.Usuarios
+                .Where(u => u.GoogleId == googleId)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<Usuario> Add(Usuario usuario)
+        {
+            await _context.AddAsync(usuario);
+            await SaveChangesAsync();
+
+            return usuario;
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -19,6 +19,7 @@ public static class DependencyInjection
 
         // Registrar repositorios
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+        services.AddScoped<ITokenService, JwtTokenService>();
 
         return services;
     }

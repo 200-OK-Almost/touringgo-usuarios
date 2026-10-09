@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace Usuarios.Domain.Entities
 {
@@ -12,8 +12,6 @@ namespace Usuarios.Domain.Entities
         public string GoogleId { get; set; } = null!;
         [Required]
         public string Nombre { get; set; } = string.Empty;
-        [Required]
-        public string Apellido { get; set; } = string.Empty;
         public string? FotoUrl { get; set; }
         [Required]
         public DateTimeOffset FechaCreacion { get; set; } = DateTimeOffset.UtcNow;

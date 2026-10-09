@@ -11,6 +11,7 @@ namespace Usuarios.Application.Interfaces
     {
         Task<ICollection<UsuarioDTO>> GetAllUsuarios();
         Task<UsuarioDTO?> GetUsuarioById(Guid id);
+        Task<UsuarioDTO> GetOrCreateUsuarioGoogleAsync(GoogleUsuarioInfoDTO dto);
 
     }
 }
