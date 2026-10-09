@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Usuarios.Application.DTOs;
 using Usuarios.Application.Interfaces;
+using Usuarios.Application.Services;
 namespace SubastaYa.API.Controllers
 {
     [ApiController]
@@ -14,10 +15,12 @@ namespace SubastaYa.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUsuarioService _usuarioService;
+        private readonly IAuthService _authService;
 
-        public AuthController(IUsuarioService usuarioService)
+        public AuthController(IUsuarioService usuarioService, IAuthService authService)
         {
             _usuarioService = usuarioService;
+            _authService = authService;
         }
 
 
@@ -46,26 +49,32 @@ namespace SubastaYa.API.Controllers
                 return Unauthorized("Google authentication failed.");
             }
 
-            // Leer retorno de google con informacion del usuario (Google ID, nombre, email, etc.)
-            var claims = result.Principal.Claims.Select(claim => new
-            {
-                claim.Type,
-                claim.Value
-            });
+            var principal = result.Principal;
 
-            GoogleUsuarioInfoDTO dto = new GoogleUsuarioInfoDTO
-            {
-                GoogleId = result.Principal.FindFirstValue(ClaimTypes.NameIdentifier)!,
-                Email = result.Principal.FindFirstValue(ClaimTypes.Email),
-                Nombre = result.Principal.FindFirstValue(ClaimTypes.Name),
+            var googleId = principal.FindFirstValue(ClaimTypes.NameIdentifier);
+            var email = principal.FindFirstValue(ClaimTypes.Email);
 
-                // La imagen de perfil no esta disponible.
-                //FotoUrl = result.Principal.FindFirstValue(ClaimTypes.Picture)
+            // Validate the required claims BEFORE using them.
+            if (string.IsNullOrWhiteSpace(googleId))
+            {
+                return Unauthorized("Google did not provide a valid identifier.");
+            }
+
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return Unauthorized("Google did not provide an email address.");
+            }
+
+            var dto = new GoogleUsuarioInfoDTO
+            {
+                GoogleId = googleId,
+                Email = email,
+                Nombre = principal.FindFirstValue(ClaimTypes.GivenName)
             };
 
-            var usuario = await _usuarioService.GetOrCreateUsuarioGoogleAsync(dto);
+            var response = await _authService.LoginWithGoogleAsync(dto);
 
-            return Ok(usuario);
+            return Ok(response);
         }
     }
 }

@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Usuarios.API.Extensions;
 using Usuarios.Application;
 using Usuarios.Infrastructure;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,20 +20,20 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Configuración de Google OAuth
+// Configuración de Google OAuth y JWT token
 builder.Services
     .AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme =
-            CookieAuthenticationDefaults.AuthenticationScheme;
+            JwtBearerDefaults.AuthenticationScheme;
+
+        options.DefaultChallengeScheme =
+            JwtBearerDefaults.AuthenticationScheme;
 
         options.DefaultSignInScheme =
             CookieAuthenticationDefaults.AuthenticationScheme;
-
-        options.DefaultChallengeScheme =
-            GoogleDefaults.AuthenticationScheme;
     })
-    .AddCookie()
+    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddGoogle(options =>
     {
         options.ClientId =
@@ -39,6 +41,31 @@ builder.Services
 
         options.ClientSecret =
             builder.Configuration["Authentication:Google:ClientSecret"]!;
+
+        options.SignInScheme =
+            CookieAuthenticationDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        var key = builder.Configuration["Jwt:Key"]
+            ?? throw new InvalidOperationException(
+                "JWT signing key is not configured.");
+
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+
+            ValidateAudience = true,
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Convert.FromBase64String(key)),
+
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.FromSeconds(30)
+        };
     });
 
 var app = builder.Build();
