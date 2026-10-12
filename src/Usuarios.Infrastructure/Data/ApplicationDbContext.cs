@@ -13,6 +13,9 @@ public class ApplicationDbContext : DbContext
     }
     // Registrar entidades
     public DbSet<Usuario> Usuarios { get; set; }
+    public DbSet<PreferenciasUsuario> PreferenciasUsuarios { get; set; }
+    public DbSet<PreferenciasCategoria> PreferenciasCategorias { get; set; }
+    public DbSet<RestriccionesUsuario> RestriccionesUsuarios { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
