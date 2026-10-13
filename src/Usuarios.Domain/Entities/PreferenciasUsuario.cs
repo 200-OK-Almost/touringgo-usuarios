@@ -21,7 +21,7 @@ namespace Usuarios.Domain.Entities
         public RitmoVisita RitmoVisitaPreferido { get; set; } = RitmoVisita.Moderado;
 
         [Required]
-        public ICollection<TipoTransporte> TransportesPreferidos { get; set; } = new List<TipoTransporte>() { TipoTransporte.Caminando };
+        public List<TipoTransporte> TransportesPreferidos { get; set; } = new List<TipoTransporte>() { TipoTransporte.Caminando };
         [Required]
         public ICollection<PreferenciasCategoria> Categorias { get; set; } = new List<PreferenciasCategoria>();
     }

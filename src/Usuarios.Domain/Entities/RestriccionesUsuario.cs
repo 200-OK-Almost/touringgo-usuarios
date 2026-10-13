@@ -18,7 +18,7 @@ namespace Usuarios.Domain.Entities
         public Usuario Usuario { get; set; } = null!;
 
         [Required]
-        public ICollection<TipoDieta> Dieta { get; set; } = new List<TipoDieta>();
+        public List<TipoDieta> Dieta { get; set; } = new List<TipoDieta>();
         [Required]
         public bool RequiereRecorridoSinEscalones { get; set; } = false;
         [Required]

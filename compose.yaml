@@ -13,6 +13,8 @@ services:
       Jwt__Issuer: TouringGo.Usuarios
       Jwt__Audience: TouringGo
       Jwt__ExpirationMinutes: "60"
+      
+      ASPNETCORE_ENVIRONMENT: Development
     depends_on:
       - postgres
 

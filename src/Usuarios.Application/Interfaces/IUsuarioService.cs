@@ -10,8 +10,9 @@ namespace Usuarios.Application.Interfaces
     public interface IUsuarioService
     {
         Task<ICollection<UsuarioDTO>> GetAllUsuarios();
-        Task<UsuarioDTO?> GetUsuarioById(Guid id);
+        Task<UsuarioDTO> GetUsuarioById(Guid id);
         Task<UsuarioDTO> GetOrCreateUsuarioGoogleAsync(GoogleUsuarioInfoDTO dto);
+        Task<PerfilUsuarioDTO> GetPerfilUsuarioByUsuarioId(Guid usuarioId);
 
     }
 }
