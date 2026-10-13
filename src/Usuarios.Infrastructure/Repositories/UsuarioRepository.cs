@@ -41,7 +41,6 @@ namespace Usuarios.Infrastructure.Repositories
         public async Task<Usuario> Add(Usuario usuario)
         {
             await _context.AddAsync(usuario);
-            await SaveChangesAsync();
 
             return usuario;
         }

@@ -18,6 +18,20 @@ namespace Usuarios.Infrastructure.Repositories
             _context = context;
         }
 
+        public async Task<PreferenciasUsuario> AddPreferencias(PreferenciasUsuario preferenciasUsuario)
+        {
+            await _context.AddAsync(preferenciasUsuario);
+
+            return preferenciasUsuario;
+        }
+
+        public async Task<RestriccionesUsuario> AddRestricciones(RestriccionesUsuario restriccionesUsuario)
+        {
+            await _context.AddAsync(restriccionesUsuario);
+
+            return restriccionesUsuario;
+        }
+
         public async Task<PreferenciasUsuario?> GetPreferenciasUsuarioByUsuarioId(Guid usuarioId)
         {
             return await _context.PreferenciasUsuarios

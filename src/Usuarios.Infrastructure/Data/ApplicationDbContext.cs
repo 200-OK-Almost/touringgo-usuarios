@@ -29,6 +29,13 @@ public class ApplicationDbContext : DbContext
                 .IsUnique();
         });
 
+        modelBuilder.Entity<PreferenciasUsuario>()
+            .HasIndex(p => p.UsuarioId)
+            .IsUnique();
+
+        modelBuilder.Entity<RestriccionesUsuario>()
+            .HasIndex(r => r.UsuarioId)
+            .IsUnique();
 
         // Carga de datos de prueba
         modelBuilder.Seed();

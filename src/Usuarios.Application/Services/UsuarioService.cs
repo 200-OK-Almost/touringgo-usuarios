@@ -31,7 +31,7 @@ namespace Usuarios.Application.Services
         {
             var usuario = await _usuarioRepository.GetUsuarioByGoogleId(dto.GoogleId);
 
-            // Si el usuario con Google ID dado no existe, crearlo 
+            // Si el usuario con Google ID dado no existe, crearlo y sus preferencias y restricciones
             if (usuario == null)
             {
                 usuario = new Usuario
@@ -42,13 +42,28 @@ namespace Usuarios.Application.Services
                     FotoUrl = dto.FotoUrl
                 };
 
+
                 await _usuarioRepository.Add(usuario);
+
+                // los valores por defecto están definidos en las entidades
+                var preferencias = new PreferenciasUsuario
+                {
+                    UsuarioId = usuario.Id
+                };
+                var restricciones = new RestriccionesUsuario
+                {
+                    UsuarioId = usuario.Id
+                }
+                ;
+                await _preferenciasRepository.AddPreferencias(preferencias);
+                await _preferenciasRepository.AddRestricciones(restricciones);
             } else
             {
                 // si el usuario si existe, actualizar el ultimo acceso
                 usuario.UltimoAcceso = DateTimeOffset.UtcNow;
-                await _usuarioRepository.SaveChangesAsync();
             }
+
+            await _usuarioRepository.SaveChangesAsync();
 
             return MapUsuarioDTO(usuario!);
         }

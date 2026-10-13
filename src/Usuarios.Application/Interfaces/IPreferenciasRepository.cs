@@ -11,5 +11,7 @@ namespace Usuarios.Application.Interfaces
     {
         Task<PreferenciasUsuario?> GetPreferenciasUsuarioByUsuarioId(Guid usuarioId);
         Task<RestriccionesUsuario?> GetRestriccionesUsuarioByUsuarioId(Guid usuarioId);
+        Task<PreferenciasUsuario> AddPreferencias(PreferenciasUsuario preferenciasUsuario);
+        Task<RestriccionesUsuario> AddRestricciones(RestriccionesUsuario restriccionesUsuario);
     }
 }
