@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Usuarios.Application.DTOs;
-using Usuarios.Application.Interfaces;
+using Usuarios.Application.DTOs.Preferencias;
+using Usuarios.Application.DTOs.Restricciones;
+using Usuarios.Application.Interfaces.Services;
 namespace SubastaYa.API.Controllers
 {
     [ApiController]

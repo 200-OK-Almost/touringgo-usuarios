@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Usuarios.Domain.Entities;
 
-namespace Usuarios.Application.Interfaces
+namespace Usuarios.Application.Interfaces.Repositories
 {
     public interface IPreferenciasRepository
     {

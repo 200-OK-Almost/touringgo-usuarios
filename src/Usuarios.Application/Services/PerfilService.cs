@@ -4,8 +4,10 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Usuarios.Application.DTOs;
-using Usuarios.Application.Interfaces;
+using Usuarios.Application.DTOs.Preferencias;
+using Usuarios.Application.DTOs.Restricciones;
+using Usuarios.Application.Interfaces.Repositories;
+using Usuarios.Application.Interfaces.Services;
 using Usuarios.Domain.Entities;
 using Usuarios.Domain.Exceptions;
 

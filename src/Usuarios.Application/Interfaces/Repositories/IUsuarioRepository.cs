@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Usuarios.Application.DTOs;
 using Usuarios.Domain.Entities;
 
-namespace Usuarios.Application.Interfaces
+namespace Usuarios.Application.Interfaces.Repositories
 {
     public interface IUsuarioRepository
     {

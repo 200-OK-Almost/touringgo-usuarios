@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Usuarios.Domain.Entities;
 using Usuarios.Domain.Enums;
 
-namespace Usuarios.Application.DTOs
+namespace Usuarios.Application.DTOs.Restricciones
 {
     public class RestriccionesUsuarioDTO
     {

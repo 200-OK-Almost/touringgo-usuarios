@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Usuarios.Application.DTOs;
+using Usuarios.Application.DTOs.Preferencias;
+using Usuarios.Application.DTOs.Restricciones;
 
-namespace Usuarios.Application.Interfaces
+namespace Usuarios.Application.Interfaces.Services
 {
     public interface IPerfilService
     {

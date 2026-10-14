@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Usuarios.Application.DTOs;
+using Usuarios.Application.DTOs.Perfil;
+using Usuarios.Application.DTOs.Usuarios;
 
-namespace Usuarios.Application.Interfaces
+namespace Usuarios.Application.Interfaces.Services
 {
     public interface IUsuarioService
     {

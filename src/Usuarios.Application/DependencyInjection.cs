@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Usuarios.Application.Interfaces;
+using Usuarios.Application.Interfaces.Services;
 using Usuarios.Application.Services;
 
 namespace Usuarios.Application;
