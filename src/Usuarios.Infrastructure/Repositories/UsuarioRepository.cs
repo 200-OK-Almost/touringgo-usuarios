@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Usuarios.Application.DTOs;
-using Usuarios.Application.Interfaces;
+using Usuarios.Application.Interfaces.Repositories;
 using Usuarios.Domain.Entities;
 using Usuarios.Infrastructure.Data;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -41,7 +41,6 @@ namespace Usuarios.Infrastructure.Repositories
         public async Task<Usuario> Add(Usuario usuario)
         {
             await _context.AddAsync(usuario);
-            await SaveChangesAsync();
 
             return usuario;
         }

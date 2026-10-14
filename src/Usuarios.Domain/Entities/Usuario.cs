@@ -15,6 +15,8 @@ namespace Usuarios.Domain.Entities
         public string? FotoUrl { get; set; }
         [Required]
         public DateTimeOffset FechaCreacion { get; set; } = DateTimeOffset.UtcNow;
+
         public DateTimeOffset UltimoAcceso { get; set; }
+        public PreferenciasUsuario? Preferencias { get; set; }
     }
 }

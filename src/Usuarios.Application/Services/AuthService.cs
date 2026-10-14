@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Usuarios.Application.DTOs;
-using Usuarios.Application.Interfaces;
+using Usuarios.Application.DTOs.Usuarios;
+using Usuarios.Application.Interfaces.Services;
 
 namespace Usuarios.Application.Services
 {

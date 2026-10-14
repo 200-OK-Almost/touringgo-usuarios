@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Usuarios.Application.DTOs;
-using Usuarios.Application.Interfaces;
+using Usuarios.Application.DTOs.Usuarios;
+using Usuarios.Application.Interfaces.Services;
 namespace SubastaYa.API.Controllers
 {
     [ApiController]
@@ -12,10 +12,14 @@ namespace SubastaYa.API.Controllers
     public class UsuariosController : ControllerBase
     {
         private readonly IUsuarioService _usuarioService;
+        private readonly ITokenService _tokenService;
+        private readonly IWebHostEnvironment _environment;
 
-        public UsuariosController(IUsuarioService usuarioService)
+        public UsuariosController(IUsuarioService usuarioService, ITokenService tokenService, IWebHostEnvironment environment, IPerfilService perfilService)
         {
             _usuarioService = usuarioService;
+            _tokenService = tokenService;
+            _environment = environment;
         }
 
         [HttpGet]
@@ -32,21 +36,24 @@ namespace SubastaYa.API.Controllers
             return Ok(usuario);
         }
 
-        [Authorize]
-        [HttpGet("me")]
-        public async Task<IActionResult> GetCurrentUser()
+        /// <summary>
+        /// Endpoint para obtener un token de autenticación de un usuario fijo de prueba.
+        /// Solo para desarrollo.
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("dev/auth/token")]
+        public async Task<ActionResult> EmitDevTestToken()
         {
-            var userIdValue = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            if (!Guid.TryParse(userIdValue, out var userId))
-                return Unauthorized();
-
-            var usuario = await _usuarioService.GetUsuarioById(userId);
-
-            if (usuario is null)
+            // No registrar endpoint fuera de desarrollo.
+            if (!_environment.IsDevelopment())
                 return NotFound();
 
-            return Ok(usuario);
+            var usuarioDevId = Guid.Parse("11111111-1111-1111-1111-111111111112");
+            var usuario = await _usuarioService.GetUsuarioById(usuarioDevId);
+
+            var token = _tokenService.GenerateToken(usuario);
+
+            return Ok(token);
         }
     }
 }

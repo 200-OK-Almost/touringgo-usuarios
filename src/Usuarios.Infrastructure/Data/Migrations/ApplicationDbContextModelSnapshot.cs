@@ -22,6 +22,156 @@ namespace Usuarios.Infrastructure.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Usuarios.Domain.Entities.PreferenciasCategoria", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Afinidad")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("CategoriaId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("PreferenciasUsuarioId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PreferenciasUsuarioId");
+
+                    b.ToTable("PreferenciasCategorias");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("44444444-4444-4444-4444-444444444441"),
+                            Afinidad = 5,
+                            CategoriaId = new Guid("33333333-3333-3333-3333-333333333331"),
+                            PreferenciasUsuarioId = new Guid("22222222-2222-2222-2222-222222222221")
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-4444-4444-4444-444444444442"),
+                            Afinidad = 4,
+                            CategoriaId = new Guid("33333333-3333-3333-3333-333333333332"),
+                            PreferenciasUsuarioId = new Guid("22222222-2222-2222-2222-222222222221")
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-4444-4444-4444-444444444443"),
+                            Afinidad = 3,
+                            CategoriaId = new Guid("33333333-3333-3333-3333-333333333333"),
+                            PreferenciasUsuarioId = new Guid("22222222-2222-2222-2222-222222222221")
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-4444-4444-4444-444444444444"),
+                            Afinidad = 5,
+                            CategoriaId = new Guid("33333333-3333-3333-3333-333333333335"),
+                            PreferenciasUsuarioId = new Guid("22222222-2222-2222-2222-222222222222")
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-4444-4444-4444-444444444445"),
+                            Afinidad = 4,
+                            CategoriaId = new Guid("33333333-3333-3333-3333-333333333334"),
+                            PreferenciasUsuarioId = new Guid("22222222-2222-2222-2222-222222222222")
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-4444-4444-4444-444444444446"),
+                            Afinidad = 2,
+                            CategoriaId = new Guid("33333333-3333-3333-3333-333333333331"),
+                            PreferenciasUsuarioId = new Guid("22222222-2222-2222-2222-222222222222")
+                        });
+                });
+
+            modelBuilder.Entity("Usuarios.Domain.Entities.PreferenciasUsuario", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("RitmoVisitaPreferido")
+                        .HasColumnType("integer");
+
+                    b.Property<int[]>("TransportesPreferidos")
+                        .IsRequired()
+                        .HasColumnType("integer[]");
+
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId")
+                        .IsUnique();
+
+                    b.ToTable("PreferenciasUsuarios");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("22222222-2222-2222-2222-222222222221"),
+                            RitmoVisitaPreferido = 0,
+                            TransportesPreferidos = new[] { 0, 1 },
+                            UsuarioId = new Guid("11111111-1111-1111-1111-111111111111")
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-2222-2222-2222-222222222222"),
+                            RitmoVisitaPreferido = 2,
+                            TransportesPreferidos = new[] { 1, 2 },
+                            UsuarioId = new Guid("11111111-1111-1111-1111-111111111112")
+                        });
+                });
+
+            modelBuilder.Entity("Usuarios.Domain.Entities.RestriccionesUsuario", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int[]>("Dieta")
+                        .IsRequired()
+                        .HasColumnType("integer[]");
+
+                    b.Property<bool>("RequiereBanoAccesible")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("RequiereRecorridoSinEscalones")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("RestriccionesUsuarios");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("55555555-5555-5555-5555-555555555551"),
+                            Dieta = new[] { 0, 1 },
+                            RequiereBanoAccesible = true,
+                            RequiereRecorridoSinEscalones = true,
+                            UsuarioId = new Guid("11111111-1111-1111-1111-111111111111")
+                        },
+                        new
+                        {
+                            Id = new Guid("55555555-5555-5555-5555-555555555552"),
+                            Dieta = new[] { 2 },
+                            RequiereBanoAccesible = false,
+                            RequiereRecorridoSinEscalones = false,
+                            UsuarioId = new Guid("11111111-1111-1111-1111-111111111112")
+                        });
+                });
+
             modelBuilder.Entity("Usuarios.Domain.Entities.Usuario", b =>
                 {
                     b.Property<Guid>("Id")
@@ -75,6 +225,49 @@ namespace Usuarios.Infrastructure.Data.Migrations
                             Nombre = "Dev Test",
                             UltimoAcceso = new DateTimeOffset(new DateTime(2026, 10, 8, 12, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
                         });
+                });
+
+            modelBuilder.Entity("Usuarios.Domain.Entities.PreferenciasCategoria", b =>
+                {
+                    b.HasOne("Usuarios.Domain.Entities.PreferenciasUsuario", "PreferenciasUsuario")
+                        .WithMany("Categorias")
+                        .HasForeignKey("PreferenciasUsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PreferenciasUsuario");
+                });
+
+            modelBuilder.Entity("Usuarios.Domain.Entities.PreferenciasUsuario", b =>
+                {
+                    b.HasOne("Usuarios.Domain.Entities.Usuario", "Usuario")
+                        .WithOne("Preferencias")
+                        .HasForeignKey("Usuarios.Domain.Entities.PreferenciasUsuario", "UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("Usuarios.Domain.Entities.RestriccionesUsuario", b =>
+                {
+                    b.HasOne("Usuarios.Domain.Entities.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("Usuarios.Domain.Entities.PreferenciasUsuario", b =>
+                {
+                    b.Navigation("Categorias");
+                });
+
+            modelBuilder.Entity("Usuarios.Domain.Entities.Usuario", b =>
+                {
+                    b.Navigation("Preferencias");
                 });
 #pragma warning restore 612, 618
         }

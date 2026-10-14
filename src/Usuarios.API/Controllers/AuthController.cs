@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Usuarios.Application.DTOs;
-using Usuarios.Application.Interfaces;
+using Usuarios.Application.DTOs.Usuarios;
+using Usuarios.Application.Interfaces.Services;
 using Usuarios.Application.Services;
 namespace SubastaYa.API.Controllers
 {

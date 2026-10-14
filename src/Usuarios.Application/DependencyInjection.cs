@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Usuarios.Application.Interfaces;
+using Usuarios.Application.Interfaces.Services;
 using Usuarios.Application.Services;
 
 namespace Usuarios.Application;
@@ -11,6 +11,7 @@ public static class DependencyInjection
     {
         // Registrar servicios 
         services.AddScoped<IUsuarioService, UsuarioService>();
+        services.AddScoped<IPerfilService, PerfilService>();
         services.AddScoped<IAuthService, AuthService>();
 
         return services;

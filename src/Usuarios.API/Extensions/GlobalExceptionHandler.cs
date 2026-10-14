@@ -16,24 +16,52 @@ public class GlobalExceptionHandler : IExceptionHandler
     public async ValueTask<bool> TryHandleAsync(
         HttpContext httpContext,
         Exception exception,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken
+    )
     {
-        _logger.LogError(
-            exception,
-            "Unhandled exception occurred while processing the request.");
-
-        var statusCode = exception switch
+        var (statusCode, title, detail) = exception switch
         {
-            NotFoundException => StatusCodes.Status404NotFound,
-            _ => StatusCodes.Status500InternalServerError
+            NotFoundException => (
+                StatusCodes.Status404NotFound,
+                "No se encontró el recurso",
+                exception.Message
+            ),
+
+            DominioException => (
+                StatusCodes.Status422UnprocessableEntity,
+                "Error de validación de regla de dominio",
+                exception.Message
+            ),
+
+            _ =>
+                (
+                StatusCodes.Status500InternalServerError,
+                "Ocurrió un error inesperado",
+                (string?)null
+            )
         };
+
+        if (statusCode == StatusCodes.Status500InternalServerError)
+        {
+            _logger.LogError(
+                exception,
+                "Ocurrió un error inesperado al procesar la solicitud."
+            );
+        }
+        else
+        {
+            _logger.LogWarning(
+                "La solicitud falló con {StatusCode}: {Message}",
+                statusCode,
+                exception.Message
+            );
+        }
 
         var problem = new ProblemDetails
         {
             Status = statusCode,
-            Title = statusCode == StatusCodes.Status404NotFound
-                ? "Resource not found"
-                : "An unexpected error occurred."
+            Title = title,
+            Detail = detail
         };
 
         httpContext.Response.StatusCode = statusCode;

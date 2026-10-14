@@ -13,6 +13,9 @@ public class ApplicationDbContext : DbContext
     }
     // Registrar entidades
     public DbSet<Usuario> Usuarios { get; set; }
+    public DbSet<PreferenciasUsuario> PreferenciasUsuarios { get; set; }
+    public DbSet<PreferenciasCategoria> PreferenciasCategorias { get; set; }
+    public DbSet<RestriccionesUsuario> RestriccionesUsuarios { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -26,6 +29,13 @@ public class ApplicationDbContext : DbContext
                 .IsUnique();
         });
 
+        modelBuilder.Entity<PreferenciasUsuario>()
+            .HasIndex(p => p.UsuarioId)
+            .IsUnique();
+
+        modelBuilder.Entity<RestriccionesUsuario>()
+            .HasIndex(r => r.UsuarioId)
+            .IsUnique();
 
         // Carga de datos de prueba
         modelBuilder.Seed();

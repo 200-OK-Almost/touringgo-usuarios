@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Usuarios.Application.Interfaces;
+using Usuarios.Application.Interfaces.Repositories;
+using Usuarios.Application.Interfaces.Services;
 using Usuarios.Infrastructure.Data;
 using Usuarios.Infrastructure.Repositories;
 
@@ -19,6 +20,8 @@ public static class DependencyInjection
 
         // Registrar repositorios
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+        services.AddScoped<IPreferenciasRepository, PreferenciasRepository>();
+        services.AddScoped<IRestriccionesRepository, RestriccionesRepository>();
         services.AddScoped<ITokenService, JwtTokenService>();
 
         return services;
