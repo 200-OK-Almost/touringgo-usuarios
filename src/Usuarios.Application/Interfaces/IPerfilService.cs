@@ -7,7 +7,7 @@ using Usuarios.Application.DTOs;
 
 namespace Usuarios.Application.Interfaces
 {
-    public interface IPreferenciasService
+    public interface IPerfilService
     {
         Task<PreferenciasUsuarioDTO> ActualizarPreferenciasByUsuarioId(
             Guid usuarioId, 

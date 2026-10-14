@@ -16,10 +16,16 @@ namespace Usuarios.Application.Services
     {
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly IPreferenciasRepository _preferenciasRepository;
-        public UsuarioService(IUsuarioRepository usuarioRepository, IPreferenciasRepository preferenciasRepository)
+        private readonly IRestriccionesRepository _restriccionesRepository;
+        public UsuarioService(
+            IUsuarioRepository usuarioRepository, 
+            IPreferenciasRepository preferenciasRepository,
+            IRestriccionesRepository restriccionesRepository
+        )
         {
             _usuarioRepository = usuarioRepository;
             _preferenciasRepository = preferenciasRepository;
+            _restriccionesRepository = restriccionesRepository;
         }
         public async Task<ICollection<UsuarioDTO>> GetAllUsuarios()
         {
@@ -55,8 +61,8 @@ namespace Usuarios.Application.Services
                     UsuarioId = usuario.Id
                 }
                 ;
-                await _preferenciasRepository.AddPreferencias(preferencias);
-                await _preferenciasRepository.AddRestricciones(restricciones);
+                await _preferenciasRepository.Add(preferencias);
+                await _restriccionesRepository.Add(restricciones);
             } else
             {
                 // si el usuario si existe, actualizar el ultimo acceso
@@ -83,11 +89,11 @@ namespace Usuarios.Application.Services
             if (usuario == null)
                 throw new NotFoundException($"Usuario con ID {usuarioId} no encontrado");
 
-            var preferencias = await _preferenciasRepository.GetPreferenciasUsuarioByUsuarioId(usuarioId);
+            var preferencias = await _preferenciasRepository.GetByUsuarioId(usuarioId);
             if (preferencias == null)
                 throw new NotFoundException($"Preferencias del usuario con ID {usuarioId} no encontradas");
 
-            var restricciones = await _preferenciasRepository.GetRestriccionesUsuarioByUsuarioId(usuarioId);
+            var restricciones = await _restriccionesRepository.GetByUsuarioId(usuarioId);
             if (restricciones == null)
                 throw new NotFoundException($"Restricciones del usuario con ID {usuarioId} no encontradas");
 

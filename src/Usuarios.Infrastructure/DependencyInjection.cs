@@ -20,6 +20,7 @@ public static class DependencyInjection
         // Registrar repositorios
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();
         services.AddScoped<IPreferenciasRepository, PreferenciasRepository>();
+        services.AddScoped<IRestriccionesRepository, RestriccionesRepository>();
         services.AddScoped<ITokenService, JwtTokenService>();
 
         return services;

@@ -9,11 +9,9 @@ namespace Usuarios.Application.Interfaces
 {
     public interface IPreferenciasRepository
     {
-        Task<PreferenciasUsuario?> GetPreferenciasUsuarioByUsuarioId(Guid usuarioId);
-        Task<RestriccionesUsuario?> GetRestriccionesUsuarioByUsuarioId(Guid usuarioId);
-        Task<PreferenciasCategoria> AddPreferenciaCategoria(PreferenciasCategoria preferenciasCategoria);
-        Task<PreferenciasUsuario> AddPreferencias(PreferenciasUsuario preferenciasUsuario);
-        Task<RestriccionesUsuario> AddRestricciones(RestriccionesUsuario restriccionesUsuario);
+        Task<PreferenciasUsuario?> GetByUsuarioId(Guid usuarioId);
+        Task AddPreferenciaCategoria(PreferenciasCategoria preferenciasCategoria);
+        Task Add(PreferenciasUsuario preferenciasUsuario);
         Task SaveChangesAsync();
     }
 }

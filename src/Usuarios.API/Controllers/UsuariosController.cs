@@ -12,16 +12,14 @@ namespace SubastaYa.API.Controllers
     public class UsuariosController : ControllerBase
     {
         private readonly IUsuarioService _usuarioService;
-        private readonly IPreferenciasService _preferenciasService;
         private readonly ITokenService _tokenService;
         private readonly IWebHostEnvironment _environment;
 
-        public UsuariosController(IUsuarioService usuarioService, ITokenService tokenService, IWebHostEnvironment environment, IPreferenciasService preferenciasService)
+        public UsuariosController(IUsuarioService usuarioService, ITokenService tokenService, IWebHostEnvironment environment, IPerfilService perfilService)
         {
             _usuarioService = usuarioService;
             _tokenService = tokenService;
             _environment = environment;
-            _preferenciasService = preferenciasService;
         }
 
         [HttpGet]
@@ -36,70 +34,6 @@ namespace SubastaYa.API.Controllers
         {
             var usuario = await _usuarioService.GetUsuarioById(id);
             return Ok(usuario);
-        }
-
-        [Authorize]
-        [HttpGet("me")]
-        public async Task<IActionResult> GetCurrentUser()
-        {
-            var userIdValue = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            if (!Guid.TryParse(userIdValue, out var userId))
-                return Unauthorized();
-
-            var usuario = await _usuarioService.GetUsuarioById(userId);
-
-            if (usuario is null)
-                return NotFound();
-
-            return Ok(usuario);
-        }
-
-        [Authorize]
-        [HttpGet("me/perfil")]
-        public async Task<IActionResult> GerPefilCurrentUser()
-        {
-            var userIdValue = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            if (!Guid.TryParse(userIdValue, out var userId))
-                return Unauthorized();
-
-            var usuarioPerfil = await _usuarioService.GetPerfilUsuarioByUsuarioId(userId);
-
-            if (usuarioPerfil is null)
-                return NotFound();
-
-            return Ok(usuarioPerfil);
-        }
-
-        [Authorize]
-        [HttpPatch("me/preferencias")]
-        public async Task<IActionResult> ActualizarPreferencias(
-            [FromBody] ActualizarPreferenciasUsuarioDTO dto)
-        {
-            var claim = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            if (!Guid.TryParse(claim, out var usuarioId))
-                return Unauthorized();
-
-            var preferencias = await _preferenciasService.ActualizarPreferenciasByUsuarioId(usuarioId, dto);
-
-            return Ok(preferencias);
-        }
-
-        [Authorize]
-        [HttpPatch("me/restricciones")]
-        public async Task<IActionResult> ActualizarRestricciones(
-            [FromBody] ActualizarRestriccionesUsuarioDTO dto)
-        {
-            var claim = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            if (!Guid.TryParse(claim, out var usuarioId))
-                return Unauthorized();
-
-            var restricciones = await _preferenciasService.ActualizarRestriccionesByUsuarioId(usuarioId, dto);
-
-            return Ok(restricciones);
         }
 
         /// <summary>

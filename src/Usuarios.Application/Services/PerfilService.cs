@@ -11,12 +11,14 @@ using Usuarios.Domain.Exceptions;
 
 namespace Usuarios.Application.Services
 {
-    public class PreferenciasService : IPreferenciasService
+    public class PerfilService : IPerfilService
     {
         private readonly IPreferenciasRepository _preferenciasRepository;
-        public PreferenciasService(IPreferenciasRepository preferenciasRepository)
+        private readonly IRestriccionesRepository _restriccionesRepository;
+        public PerfilService(IPreferenciasRepository preferenciasRepository, IRestriccionesRepository restriccionesRepository)
         {
             _preferenciasRepository = preferenciasRepository;
+            _restriccionesRepository = restriccionesRepository;
         }
 
         public async Task<PreferenciasUsuarioDTO> ActualizarPreferenciasByUsuarioId(
@@ -24,7 +26,7 @@ namespace Usuarios.Application.Services
             ActualizarPreferenciasUsuarioDTO dto
         )
         {
-            var preferencias = await _preferenciasRepository.GetPreferenciasUsuarioByUsuarioId(usuarioId);
+            var preferencias = await _preferenciasRepository.GetByUsuarioId(usuarioId);
 
             if (preferencias is null)
             {
@@ -80,7 +82,7 @@ namespace Usuarios.Application.Services
 
         public async Task<RestriccionesUsuarioDTO> ActualizarRestriccionesByUsuarioId(Guid usuarioId, ActualizarRestriccionesUsuarioDTO dto)
         {
-            var restricciones = await _preferenciasRepository.GetRestriccionesUsuarioByUsuarioId(usuarioId);
+            var restricciones = await _restriccionesRepository.GetByUsuarioId(usuarioId);
 
             if (restricciones is null)
             {
@@ -100,7 +102,7 @@ namespace Usuarios.Application.Services
                 restricciones.Dieta = dto.Dieta;
             }
 
-            await _preferenciasRepository.SaveChangesAsync();
+            await _restriccionesRepository.SaveChangesAsync();
 
             return MapRestriccionesUsuarioDTO(restricciones);
         }

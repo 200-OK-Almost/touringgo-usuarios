@@ -11,7 +11,7 @@ public static class DependencyInjection
     {
         // Registrar servicios 
         services.AddScoped<IUsuarioService, UsuarioService>();
-        services.AddScoped<IPreferenciasService, PreferenciasService>();
+        services.AddScoped<IPerfilService, PerfilService>();
         services.AddScoped<IAuthService, AuthService>();
 
         return services;
