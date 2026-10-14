@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.Text.Json.Serialization;
 using Usuarios.API.Extensions;
@@ -77,6 +78,28 @@ builder.Services
         options.JsonSerializerOptions.Converters.Add(
             new JsonStringEnumConverter());
     });
+
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.InvalidModelStateResponseFactory = context =>
+    {
+        var errors = context.ModelState
+            .Where(x => x.Value?.Errors.Count > 0)
+            .SelectMany(x => x.Value!.Errors)
+            .Select(x => x.ErrorMessage)
+            .ToList();
+
+        var problem = new ValidationProblemDetails(
+            context.ModelState)
+        {
+            Status = StatusCodes.Status400BadRequest,
+            Title = "Solicitud Invalida",
+            Detail = string.Join(" ", errors)
+        };
+
+        return new BadRequestObjectResult(problem);
+    };
+});
 
 var app = builder.Build();
 

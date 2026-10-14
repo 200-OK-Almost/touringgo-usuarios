@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using Usuarios.Application.DTOs.Restricciones;
 using Usuarios.Application.Interfaces.Repositories;
 using Usuarios.Application.Interfaces.Services;
 using Usuarios.Domain.Entities;
+using Usuarios.Domain.Enums;
 using Usuarios.Domain.Exceptions;
 
 namespace Usuarios.Application.Services
@@ -37,13 +39,27 @@ namespace Usuarios.Application.Services
 
             // actualizar los campos si se envian en el dto, si no, dejar valores existente
             if (dto.RitmoVisitaPreferido is not null)
+            {
+                if (!Enum.IsDefined(typeof(RitmoVisita), dto.RitmoVisitaPreferido))
+                {
+                    throw new DominioException($"El tipo de RitmoVisita '{dto.RitmoVisitaPreferido}' no es válido.");
+                }
+
                 preferencias.RitmoVisitaPreferido = dto.RitmoVisitaPreferido.Value;
+            }
 
             // si se envía una lista, reemplazarla por la existente
             if (dto.TransportesPreferidos is not null)
             {
                 if (dto.TransportesPreferidos.Count <= 0)
+                {
                     throw new DominioException($"Debe existir al menos un método de transporte preferido");
+                }
+
+                if (dto.TransportesPreferidos.Any(d => !Enum.IsDefined(typeof(TipoTransporte), d)))
+                {
+                    throw new DominioException("Uno o más tipos de transporte no son válidos.");
+                }
 
                 preferencias.TransportesPreferidos = dto.TransportesPreferidos;
             }
@@ -101,6 +117,11 @@ namespace Usuarios.Application.Services
             // si se envía una lista, reemplazarla por la existente
             if (dto.Dieta is not null)
             {
+                if (dto.Dieta.Any(d => !Enum.IsDefined(typeof(TipoDieta), d)))
+                {
+                    throw new DominioException("Uno o más tipos de dietas no son válidos.");
+                }
+
                 restricciones.Dieta = dto.Dieta;
             }
 

@@ -28,7 +28,7 @@ public class GlobalExceptionHandler : IExceptionHandler
             ),
 
             DominioException => (
-                StatusCodes.Status400BadRequest,
+                StatusCodes.Status422UnprocessableEntity,
                 "Error de validación de regla de dominio",
                 exception.Message
             ),
