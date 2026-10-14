@@ -12,14 +12,16 @@ namespace SubastaYa.API.Controllers
     public class UsuariosController : ControllerBase
     {
         private readonly IUsuarioService _usuarioService;
+        private readonly IPreferenciasService _preferenciasService;
         private readonly ITokenService _tokenService;
         private readonly IWebHostEnvironment _environment;
 
-        public UsuariosController(IUsuarioService usuarioService, ITokenService tokenService, IWebHostEnvironment environment)
+        public UsuariosController(IUsuarioService usuarioService, ITokenService tokenService, IWebHostEnvironment environment, IPreferenciasService preferenciasService)
         {
             _usuarioService = usuarioService;
             _tokenService = tokenService;
             _environment = environment;
+            _preferenciasService = preferenciasService;
         }
 
         [HttpGet]
@@ -68,6 +70,36 @@ namespace SubastaYa.API.Controllers
                 return NotFound();
 
             return Ok(usuarioPerfil);
+        }
+
+        [Authorize]
+        [HttpPatch("me/preferencias")]
+        public async Task<IActionResult> ActualizarPreferencias(
+            [FromBody] ActualizarPreferenciasUsuarioDTO dto)
+        {
+            var claim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!Guid.TryParse(claim, out var usuarioId))
+                return Unauthorized();
+
+            var preferencias = await _preferenciasService.ActualizarPreferenciasByUsuarioId(usuarioId, dto);
+
+            return Ok(preferencias);
+        }
+
+        [Authorize]
+        [HttpPatch("me/restricciones")]
+        public async Task<IActionResult> ActualizarRestricciones(
+            [FromBody] ActualizarRestriccionesUsuarioDTO dto)
+        {
+            var claim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!Guid.TryParse(claim, out var usuarioId))
+                return Unauthorized();
+
+            var restricciones = await _preferenciasService.ActualizarRestriccionesByUsuarioId(usuarioId, dto);
+
+            return Ok(restricciones);
         }
 
         /// <summary>

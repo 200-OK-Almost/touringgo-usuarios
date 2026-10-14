@@ -9,5 +9,14 @@ namespace Usuarios.Application.Interfaces
 {
     public interface IPreferenciasService
     {
+        Task<PreferenciasUsuarioDTO> ActualizarPreferenciasByUsuarioId(
+            Guid usuarioId, 
+            ActualizarPreferenciasUsuarioDTO dto
+        );
+
+        Task<RestriccionesUsuarioDTO> ActualizarRestriccionesByUsuarioId(
+            Guid usuarioId, 
+            ActualizarRestriccionesUsuarioDTO dto
+        );
     }
 }
