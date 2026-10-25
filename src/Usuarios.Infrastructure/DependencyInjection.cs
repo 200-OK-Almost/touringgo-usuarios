@@ -24,6 +24,7 @@ public static class DependencyInjection
         services.AddScoped<IRestriccionesRepository, RestriccionesRepository>();
         services.AddScoped<ITokenService, JwtTokenService>();
 
+        services.AddSingleton<IAuthCodeStore, InMemoryAuthCodeStore>();
         return services;
     }
 }

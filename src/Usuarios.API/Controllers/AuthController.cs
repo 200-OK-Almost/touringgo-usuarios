@@ -16,11 +16,13 @@ namespace SubastaYa.API.Controllers
     {
         private readonly IUsuarioService _usuarioService;
         private readonly IAuthService _authService;
+        private readonly IAuthCodeStore _authCodeStore;
 
-        public AuthController(IUsuarioService usuarioService, IAuthService authService)
+        public AuthController(IUsuarioService usuarioService, IAuthService authService, IAuthCodeStore authCodeStore)
         {
             _usuarioService = usuarioService;
             _authService = authService;
+            _authCodeStore = authCodeStore;
         }
 
 
@@ -73,8 +75,22 @@ namespace SubastaYa.API.Controllers
             };
 
             var response = await _authService.LoginWithGoogleAsync(dto);
+            string code = _authCodeStore.Create(response);
 
-            return Ok(response);
+            return Redirect($"http://localhost:5173/auth/callback?code={Uri.EscapeDataString(code)}");
+        }
+        public sealed record ExchangeCodeRequest(string Code);
+
+        [HttpPost("exchange")]
+        public async Task<IActionResult> Exchange(
+            [FromBody] ExchangeCodeRequest request)
+        {
+            var authResponse = _authCodeStore.Consume(request.Code);
+
+            if (authResponse is null)
+                return Unauthorized();
+
+            return Ok(authResponse);
         }
     }
 }
