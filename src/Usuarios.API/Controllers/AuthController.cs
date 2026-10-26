@@ -17,12 +17,14 @@ namespace SubastaYa.API.Controllers
         private readonly IUsuarioService _usuarioService;
         private readonly IAuthService _authService;
         private readonly IAuthCodeStore _authCodeStore;
+        private readonly IConfiguration _configuration;
 
-        public AuthController(IUsuarioService usuarioService, IAuthService authService, IAuthCodeStore authCodeStore)
+        public AuthController(IUsuarioService usuarioService, IAuthService authService, IAuthCodeStore authCodeStore, IConfiguration configuration)
         {
             _usuarioService = usuarioService;
             _authService = authService;
             _authCodeStore = authCodeStore;
+            _configuration = configuration;
         }
 
 
@@ -77,7 +79,12 @@ namespace SubastaYa.API.Controllers
             var response = await _authService.LoginWithGoogleAsync(dto);
             string code = _authCodeStore.Create(response);
 
-            return Redirect($"http://localhost:5173/auth/callback?code={Uri.EscapeDataString(code)}");
+            string frontendUrl = _configuration["Frontend:BaseUrl"] 
+                                ?? throw new InvalidOperationException("Frontend:BaseUrl is not configured.");
+
+            string redirectUrl = $"{frontendUrl.TrimEnd('/')}/auth/callback?code={Uri.EscapeDataString(code)}";
+
+            return Redirect(redirectUrl);
         }
         public sealed record ExchangeCodeRequest(string Code);
 

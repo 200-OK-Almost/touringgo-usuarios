@@ -7,8 +7,20 @@ using System.Text.Json.Serialization;
 using Usuarios.API.Extensions;
 using Usuarios.Application;
 using Usuarios.Infrastructure;
+using Microsoft.AspNetCore.HttpOverrides;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders =
+        ForwardedHeaders.XForwardedHost |
+        ForwardedHeaders.XForwardedProto;
+
+    options.KnownNetworks.Clear();
+    options.KnownProxies.Clear();
+});
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
@@ -102,7 +114,7 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 });
 
 var app = builder.Build();
-
+app.UseForwardedHeaders();
 app.UseExceptionHandler();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -113,6 +125,23 @@ if (app.Environment.IsDevelopment())
 
 // For Google OAuth
 app.UseAuthentication();
+
+// Temporary debug
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path == "/auth/google")
+    {
+        app.Logger.LogInformation(
+            "OAuth request: Scheme={Scheme}, Host={Host}, XForwardedHost={ForwardedHost}, XForwardedProto={ForwardedProto}",
+            context.Request.Scheme,
+            context.Request.Host,
+            context.Request.Headers["X-Forwarded-Host"].ToString(),
+            context.Request.Headers["X-Forwarded-Proto"].ToString());
+    }
+
+    await next();
+});
+
 app.UseAuthorization();
 
 app.UseHttpsRedirection();

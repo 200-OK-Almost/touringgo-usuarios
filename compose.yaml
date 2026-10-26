@@ -13,6 +13,7 @@ services:
       Jwt__Issuer: TouringGo.Usuarios
       Jwt__Audience: TouringGo
       Jwt__ExpirationMinutes: "60"
+      Frontend__BaseUrl: "http://localhost:3000"
       
       ASPNETCORE_ENVIRONMENT: Development
     depends_on:
