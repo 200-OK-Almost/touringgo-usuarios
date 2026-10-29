@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Usuarios.Application.Interfaces.Repositories;
@@ -24,7 +24,6 @@ public static class DependencyInjection
         services.AddScoped<IRestriccionesRepository, RestriccionesRepository>();
         services.AddScoped<ITokenService, JwtTokenService>();
 
-        services.AddSingleton<IAuthCodeStore, InMemoryAuthCodeStore>();
         return services;
     }
 }
