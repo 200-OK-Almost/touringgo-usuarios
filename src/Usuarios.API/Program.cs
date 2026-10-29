@@ -80,6 +80,20 @@ builder.Services
             ValidateLifetime = true,
             ClockSkew = TimeSpan.FromSeconds(30)
         };
+
+        // Leer JWT desde la Cookie "access_token" si no viene en Authorization header
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                if (context.Request.Cookies.TryGetValue("access_token", out var token) &&
+                    !string.IsNullOrWhiteSpace(token))
+                {
+                    context.Token = token;
+                }
+                return Task.CompletedTask;
+            }
+        };
     });
 
 // Serialización de enums a string en lugar de integers.

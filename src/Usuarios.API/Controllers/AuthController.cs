@@ -1,13 +1,12 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using Usuarios.Application.DTOs.Usuarios;
 using Usuarios.Application.Interfaces.Services;
-using Usuarios.Application.Services;
+
 namespace SubastaYa.API.Controllers
 {
     [ApiController]
@@ -16,17 +15,20 @@ namespace SubastaYa.API.Controllers
     {
         private readonly IUsuarioService _usuarioService;
         private readonly IAuthService _authService;
-        private readonly IAuthCodeStore _authCodeStore;
         private readonly IConfiguration _configuration;
+        private readonly IWebHostEnvironment _environment;
 
-        public AuthController(IUsuarioService usuarioService, IAuthService authService, IAuthCodeStore authCodeStore, IConfiguration configuration)
+        public AuthController(
+            IUsuarioService usuarioService,
+            IAuthService authService,
+            IConfiguration configuration,
+            IWebHostEnvironment environment)
         {
             _usuarioService = usuarioService;
             _authService = authService;
-            _authCodeStore = authCodeStore;
             _configuration = configuration;
+            _environment = environment;
         }
-
 
         [HttpGet]
         [HttpGet("google")]
@@ -39,10 +41,11 @@ namespace SubastaYa.API.Controllers
 
             return Challenge(properties, GoogleDefaults.AuthenticationScheme);
         }
+
         /// <summary>
-        /// Método ejecutado cuando el usuario completa la autenticación con exito
+        /// Método ejecutado cuando el usuario completa la autenticación con éxito en Google.
+        /// Emite una HttpOnly Cookie con el JWT generado y redirige al frontend.
         /// </summary>
-        /// <returns></returns>
         [HttpGet("google/callback")]
         public async Task<IActionResult> GoogleCallback()
         {
@@ -58,7 +61,6 @@ namespace SubastaYa.API.Controllers
             var googleId = principal.FindFirstValue(ClaimTypes.NameIdentifier);
             var email = principal.FindFirstValue(ClaimTypes.Email);
 
-            // Validate the required claims BEFORE using them.
             if (string.IsNullOrWhiteSpace(googleId))
             {
                 return Unauthorized("Google did not provide a valid identifier.");
@@ -77,27 +79,62 @@ namespace SubastaYa.API.Controllers
             };
 
             var response = await _authService.LoginWithGoogleAsync(dto);
-            string code = _authCodeStore.Create(response);
+
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = !_environment.IsDevelopment(),
+                SameSite = SameSiteMode.Lax,
+                Expires = response.ExpiresAt,
+                Path = "/"
+            };
+
+            Response.Cookies.Append("access_token", response.AccessToken, cookieOptions);
 
             string frontendUrl = _configuration["Frontend:BaseUrl"] 
                                 ?? throw new InvalidOperationException("Frontend:BaseUrl is not configured.");
 
-            string redirectUrl = $"{frontendUrl.TrimEnd('/')}/auth/callback?code={Uri.EscapeDataString(code)}";
+            string redirectUrl = $"{frontendUrl.TrimEnd('/')}/auth/callback";
 
             return Redirect(redirectUrl);
         }
-        public sealed record ExchangeCodeRequest(string Code);
 
-        [HttpPost("exchange")]
-        public async Task<IActionResult> Exchange(
-            [FromBody] ExchangeCodeRequest request)
+        /// <summary>
+        /// Obtiene la información del usuario autenticado a partir del JWT enviado en la cookie o header.
+        /// Usado por el frontend para validar y persistir la sesión.
+        /// </summary>
+        [Authorize]
+        [HttpGet("me")]
+        public async Task<IActionResult> GetCurrentUser()
         {
-            var authResponse = _authCodeStore.Consume(request.Code);
+            var userIdValue = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            if (authResponse is null)
+            if (!Guid.TryParse(userIdValue, out var userId))
                 return Unauthorized();
 
-            return Ok(authResponse);
+            var usuario = await _usuarioService.GetUsuarioById(userId);
+
+            if (usuario is null)
+                return NotFound();
+
+            return Ok(usuario);
+        }
+
+        /// <summary>
+        /// Cierra la sesión eliminando la cookie HttpOnly.
+        /// </summary>
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete("access_token", new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = !_environment.IsDevelopment(),
+                SameSite = SameSiteMode.Lax,
+                Path = "/"
+            });
+
+            return NoContent();
         }
     }
 }
