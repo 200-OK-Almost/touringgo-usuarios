@@ -36,6 +36,10 @@ public class ApplicationDbContext : DbContext
             .HasIndex(r => r.UsuarioId)
             .IsUnique();
 
+        modelBuilder.Entity<PreferenciasCategoria>()
+            .HasIndex(pc => new { pc.PreferenciasUsuarioId, pc.CategoriaCodigo })
+            .IsUnique();
+
         // Carga de datos de prueba
         modelBuilder.Seed();
     }

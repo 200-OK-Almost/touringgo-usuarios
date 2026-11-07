@@ -9,6 +9,7 @@ using Usuarios.Application.DTOs.Preferencias;
 using Usuarios.Application.DTOs.Restricciones;
 using Usuarios.Application.Interfaces.Repositories;
 using Usuarios.Application.Interfaces.Services;
+using Usuarios.Domain;
 using Usuarios.Domain.Entities;
 using Usuarios.Domain.Enums;
 using Usuarios.Domain.Exceptions;
@@ -68,11 +69,15 @@ namespace Usuarios.Application.Services
             {
                 foreach (var preferenciaCategoria in dto.Categorias)
                 {
-                    var existente = preferencias.Categorias
-                        .FirstOrDefault(c => c.CategoriaId == preferenciaCategoria.CategoriaId);
+                    if (string.IsNullOrWhiteSpace(preferenciaCategoria.CategoriaCodigo) ||
+                        !CategoriasLugar.Codigos.Contains(preferenciaCategoria.CategoriaCodigo))
+                        throw new DominioException($"El código de categoría '{preferenciaCategoria.CategoriaCodigo}' no es válido.");
 
                     if (preferenciaCategoria.Afinidad < 1 || preferenciaCategoria.Afinidad > 5)
                         throw new DominioException($"El valor de afinidad para una categoría debe estar entre 1 y 5");
+
+                    var existente = preferencias.Categorias
+                        .FirstOrDefault(c => c.CategoriaCodigo == preferenciaCategoria.CategoriaCodigo);
 
                     if (existente is null)
                     {
@@ -80,7 +85,7 @@ namespace Usuarios.Application.Services
                         var nuevaPreferenciaCategoria = new PreferenciasCategoria
                         {
                             PreferenciasUsuarioId = preferencias.Id,
-                            CategoriaId = preferenciaCategoria.CategoriaId,
+                            CategoriaCodigo = preferenciaCategoria.CategoriaCodigo,
                             Afinidad = preferenciaCategoria.Afinidad
                         };
 
@@ -150,7 +155,7 @@ namespace Usuarios.Application.Services
             return new PreferenciasCategoriaDTO
             {
                 Id = p.Id,
-                CategoriaId = p.CategoriaId,
+                CategoriaCodigo = p.CategoriaCodigo,
                 Afinidad = p.Afinidad
             };
         }

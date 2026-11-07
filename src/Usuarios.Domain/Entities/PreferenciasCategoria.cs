@@ -19,7 +19,7 @@ namespace Usuarios.Domain.Entities
         public PreferenciasUsuario PreferenciasUsuario { get; set; } = null!;
 
         [Required]
-        public Guid CategoriaId { get; set; } // FK al microservicio de lugares
+        public string CategoriaCodigo { get; set; } = string.Empty; // código compartido con el microservicio de Lugares
         [Required]
         public int Afinidad { get; set; }
 
