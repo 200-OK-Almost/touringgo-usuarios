@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SubastaYa.Data;
 using Usuarios.Domain.Entities;
 
 namespace Usuarios.Infrastructure.Data;

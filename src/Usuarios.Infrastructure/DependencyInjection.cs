@@ -5,6 +5,7 @@ using Usuarios.Application.Interfaces.Repositories;
 using Usuarios.Application.Interfaces.Services;
 using Usuarios.Infrastructure.Data;
 using Usuarios.Infrastructure.Repositories;
+using Usuarios.Infrastructure.Services;
 
 namespace Usuarios.Infrastructure;
 

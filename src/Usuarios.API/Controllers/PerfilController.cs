@@ -1,27 +1,26 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Usuarios.Application.DTOs.Preferencias;
 using Usuarios.Application.DTOs.Restricciones;
 using Usuarios.Application.Interfaces.Services;
-namespace SubastaYa.API.Controllers
+namespace Usuarios.API.Controllers
 {
     [ApiController]
     [Route("api/me")]
+    [Authorize(Policy = "RequiereUsuarioId")]
     public class PerfilController : ControllerBase
     {
         private readonly IUsuarioService _usuarioService;
         private readonly IPerfilService _perfilService;
 
-        public PerfilController(IUsuarioService usuarioService, ITokenService tokenService, IWebHostEnvironment environment, IPerfilService perfilService)
+        public PerfilController(IUsuarioService usuarioService, IPerfilService perfilService)
         {
             _usuarioService = usuarioService;
             _perfilService = perfilService;
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetCurrentUser()
         {
@@ -38,7 +37,6 @@ namespace SubastaYa.API.Controllers
             return Ok(usuario);
         }
 
-        [Authorize]
         [HttpGet("perfil")]
         public async Task<IActionResult> GerPefilCurrentUser()
         {
@@ -55,7 +53,6 @@ namespace SubastaYa.API.Controllers
             return Ok(usuarioPerfil);
         }
 
-        [Authorize]
         [HttpPatch("preferencias")]
         public async Task<IActionResult> ActualizarPreferencias(
             [FromBody] ActualizarPreferenciasUsuarioDTO dto)
@@ -70,7 +67,6 @@ namespace SubastaYa.API.Controllers
             return Ok(preferencias);
         }
 
-        [Authorize]
         [HttpPatch("restricciones")]
         public async Task<IActionResult> ActualizarRestricciones(
             [FromBody] ActualizarRestriccionesUsuarioDTO dto)

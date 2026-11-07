@@ -7,8 +7,11 @@ using System.Text.Json.Serialization;
 using Usuarios.API.Extensions;
 using Usuarios.Application;
 using Usuarios.Infrastructure;
+using Usuarios.Infrastructure.Data;
 using Microsoft.AspNetCore.HttpOverrides;
 using System.Net;
+using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -127,6 +130,12 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
     };
 });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequiereUsuarioId", policy =>
+        policy.RequireClaim(ClaimTypes.NameIdentifier));
+});
+
 var app = builder.Build();
 app.UseForwardedHeaders();
 app.UseExceptionHandler();
@@ -160,5 +169,21 @@ app.UseAuthorization();
 
 app.UseHttpsRedirection();
 app.MapControllers();
+
+// Aplicar migraciones al arrancar (omitido en entorno de testing para permitir DbContext en memoria).
+if (!app.Environment.IsEnvironment("Testing"))
+{
+    try
+    {
+        using var scope = app.Services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        await dbContext.Database.MigrateAsync();
+    }
+    catch (Exception ex)
+    {
+        var logger = app.Services.GetRequiredService<ILogger<Program>>();
+        logger.LogWarning(ex, "No se pudo preparar la base de datos al arrancar (¿Postgres aún no iniciado?).");
+    }
+}
 
 app.Run();

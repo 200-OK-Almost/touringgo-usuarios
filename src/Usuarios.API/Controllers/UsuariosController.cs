@@ -1,11 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using Usuarios.Application.DTOs.Usuarios;
 using Usuarios.Application.Interfaces.Services;
-namespace SubastaYa.API.Controllers
+namespace Usuarios.API.Controllers
 {
     [ApiController]
     [Route("api/usuarios")]
@@ -15,25 +12,11 @@ namespace SubastaYa.API.Controllers
         private readonly ITokenService _tokenService;
         private readonly IWebHostEnvironment _environment;
 
-        public UsuariosController(IUsuarioService usuarioService, ITokenService tokenService, IWebHostEnvironment environment, IPerfilService perfilService)
+        public UsuariosController(IUsuarioService usuarioService, ITokenService tokenService, IWebHostEnvironment environment)
         {
             _usuarioService = usuarioService;
             _tokenService = tokenService;
             _environment = environment;
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<UsuarioDTO>>> GetAllUsuarios()
-        {
-            var usuarios = await _usuarioService.GetAllUsuarios();
-            return Ok(usuarios);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<UsuarioDTO>> GetUsuarioById(Guid id)
-        {
-            var usuario = await _usuarioService.GetUsuarioById(id);
-            return Ok(usuario);
         }
 
         /// <summary>
@@ -41,6 +24,7 @@ namespace SubastaYa.API.Controllers
         /// Solo para desarrollo.
         /// </summary>
         /// <returns></returns>
+        [AllowAnonymous]
         [HttpPost("dev/auth/token")]
         public async Task<ActionResult> EmitDevTestToken()
         {
