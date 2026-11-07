@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Usuarios.Application.DTOs.Usuarios;
 using Usuarios.Application.Interfaces.Services;
-namespace SubastaYa.API.Controllers
+namespace Usuarios.API.Controllers
 {
     [ApiController]
     [Route("api/usuarios")]

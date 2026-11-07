@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Usuarios.Application.DTOs.Preferencias;
 using Usuarios.Application.DTOs.Restricciones;
 using Usuarios.Application.Interfaces.Services;
-namespace SubastaYa.API.Controllers
+namespace Usuarios.API.Controllers
 {
     [ApiController]
     [Route("api/me")]

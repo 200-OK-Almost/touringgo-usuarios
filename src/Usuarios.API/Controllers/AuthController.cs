@@ -7,7 +7,7 @@ using System.Security.Claims;
 using Usuarios.Application.DTOs.Usuarios;
 using Usuarios.Application.Interfaces.Services;
 
-namespace SubastaYa.API.Controllers
+namespace Usuarios.API.Controllers
 {
     [ApiController]
     [Route("auth")]

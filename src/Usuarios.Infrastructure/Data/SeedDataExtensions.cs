@@ -3,7 +3,7 @@ using Usuarios.Domain.Entities;
 using Usuarios.Domain.Enums;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace SubastaYa.Data
+namespace Usuarios.Infrastructure.Data
 {
     public static class SeedDataExtensions
     {

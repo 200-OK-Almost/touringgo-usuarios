@@ -6,6 +6,8 @@ using System.Text;
 using Usuarios.Application.DTOs.Usuarios;
 using Usuarios.Application.Interfaces.Services;
 
+namespace Usuarios.Infrastructure.Services;
+
 public class JwtTokenService : ITokenService
 {
     private readonly IConfiguration _configuration;
