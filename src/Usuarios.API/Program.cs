@@ -187,3 +187,5 @@ if (!app.Environment.IsEnvironment("Testing"))
 }
 
 app.Run();
+
+public partial class Program { }
