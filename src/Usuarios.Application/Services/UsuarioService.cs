@@ -141,7 +141,7 @@ namespace Usuarios.Application.Services
                     .Select(c => new PreferenciasCategoriaDTO
                     {
                         Id = c.Id,
-                        CategoriaId = c.CategoriaId,
+                        CategoriaCodigo = c.CategoriaCodigo,
                         Afinidad = c.Afinidad
                     }).ToList()
             };

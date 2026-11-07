@@ -69,57 +69,52 @@ namespace Usuarios.Infrastructure.Data
             );
 
             // 3. Preferencias de categorías
-            // Categorías ilustrativas:
-            // 333...331 = Historia y patrimonio
-            // 333...332 = Gastronomía
-            // 333...333 = Museos y arte
-            // 333...334 = Parques y naturaleza
-            // 333...335 = Fútbol y deportes
+            // Códigos compartidos con el microservicio de Lugares.
 
             modelBuilder.Entity<PreferenciasCategoria>().HasData(
-                // Usuario Test: afinidad alta por historia y gastronomía.
+                // Usuario Test: afinidad alta por museos, gastronomía y parques.
                 new PreferenciasCategoria
                 {
                     Id = Guid.Parse("44444444-4444-4444-4444-444444444441"),
                     PreferenciasUsuarioId = preferenciasUsuarioTestId,
-                    CategoriaId = Guid.Parse("33333333-3333-3333-3333-333333333331"),
+                    CategoriaCodigo = "museos_galerias",
                     Afinidad = 5
                 },
                 new PreferenciasCategoria
                 {
                     Id = Guid.Parse("44444444-4444-4444-4444-444444444442"),
                     PreferenciasUsuarioId = preferenciasUsuarioTestId,
-                    CategoriaId = Guid.Parse("33333333-3333-3333-3333-333333333332"),
+                    CategoriaCodigo = "gastronomia_clasica",
                     Afinidad = 4
                 },
                 new PreferenciasCategoria
                 {
                     Id = Guid.Parse("44444444-4444-4444-4444-444444444443"),
                     PreferenciasUsuarioId = preferenciasUsuarioTestId,
-                    CategoriaId = Guid.Parse("33333333-3333-3333-3333-333333333333"),
+                    CategoriaCodigo = "parques_aire_libre",
                     Afinidad = 3
                 },
 
-                // Dev Test: afinidad alta por deportes y parques.
+                // Dev Test: afinidad alta por parques, bares y museos.
                 new PreferenciasCategoria
                 {
                     Id = Guid.Parse("44444444-4444-4444-4444-444444444444"),
                     PreferenciasUsuarioId = preferenciasDevTestId,
-                    CategoriaId = Guid.Parse("33333333-3333-3333-3333-333333333335"),
+                    CategoriaCodigo = "parques_aire_libre",
                     Afinidad = 5
                 },
                 new PreferenciasCategoria
                 {
                     Id = Guid.Parse("44444444-4444-4444-4444-444444444445"),
                     PreferenciasUsuarioId = preferenciasDevTestId,
-                    CategoriaId = Guid.Parse("33333333-3333-3333-3333-333333333334"),
+                    CategoriaCodigo = "bares_vermu",
                     Afinidad = 4
                 },
                 new PreferenciasCategoria
                 {
                     Id = Guid.Parse("44444444-4444-4444-4444-444444444446"),
                     PreferenciasUsuarioId = preferenciasDevTestId,
-                    CategoriaId = Guid.Parse("33333333-3333-3333-3333-333333333331"),
+                    CategoriaCodigo = "museos_galerias",
                     Afinidad = 2
                 }
             );
