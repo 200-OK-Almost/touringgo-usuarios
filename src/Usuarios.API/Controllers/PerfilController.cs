@@ -10,6 +10,7 @@ namespace SubastaYa.API.Controllers
 {
     [ApiController]
     [Route("api/me")]
+    [Authorize(Policy = "RequiereUsuarioId")]
     public class PerfilController : ControllerBase
     {
         private readonly IUsuarioService _usuarioService;
@@ -21,7 +22,6 @@ namespace SubastaYa.API.Controllers
             _perfilService = perfilService;
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetCurrentUser()
         {
@@ -38,7 +38,6 @@ namespace SubastaYa.API.Controllers
             return Ok(usuario);
         }
 
-        [Authorize]
         [HttpGet("perfil")]
         public async Task<IActionResult> GerPefilCurrentUser()
         {
@@ -55,7 +54,6 @@ namespace SubastaYa.API.Controllers
             return Ok(usuarioPerfil);
         }
 
-        [Authorize]
         [HttpPatch("preferencias")]
         public async Task<IActionResult> ActualizarPreferencias(
             [FromBody] ActualizarPreferenciasUsuarioDTO dto)
@@ -70,7 +68,6 @@ namespace SubastaYa.API.Controllers
             return Ok(preferencias);
         }
 
-        [Authorize]
         [HttpPatch("restricciones")]
         public async Task<IActionResult> ActualizarRestricciones(
             [FromBody] ActualizarRestriccionesUsuarioDTO dto)

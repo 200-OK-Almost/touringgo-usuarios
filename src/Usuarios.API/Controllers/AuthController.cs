@@ -103,7 +103,7 @@ namespace SubastaYa.API.Controllers
         /// Obtiene la información del usuario autenticado a partir del JWT enviado en la cookie o header.
         /// Usado por el frontend para validar y persistir la sesión.
         /// </summary>
-        [Authorize]
+        [Authorize(Policy = "RequiereUsuarioId")]
         [HttpGet("me")]
         public async Task<IActionResult> GetCurrentUser()
         {

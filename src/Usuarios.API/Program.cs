@@ -9,6 +9,7 @@ using Usuarios.Application;
 using Usuarios.Infrastructure;
 using Microsoft.AspNetCore.HttpOverrides;
 using System.Net;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -125,6 +126,12 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 
         return new BadRequestObjectResult(problem);
     };
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequiereUsuarioId", policy =>
+        policy.RequireClaim(ClaimTypes.NameIdentifier));
 });
 
 var app = builder.Build();
