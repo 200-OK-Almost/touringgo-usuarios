@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Usuarios.Application.DTOs.Usuarios;
 using Usuarios.Application.Interfaces.Services;
 namespace Usuarios.API.Controllers
 {
@@ -13,7 +12,7 @@ namespace Usuarios.API.Controllers
         private readonly ITokenService _tokenService;
         private readonly IWebHostEnvironment _environment;
 
-        public UsuariosController(IUsuarioService usuarioService, ITokenService tokenService, IWebHostEnvironment environment, IPerfilService perfilService)
+        public UsuariosController(IUsuarioService usuarioService, ITokenService tokenService, IWebHostEnvironment environment)
         {
             _usuarioService = usuarioService;
             _tokenService = tokenService;

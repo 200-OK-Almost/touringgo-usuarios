@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Usuarios.Application.DTOs.Preferencias;
@@ -16,7 +15,7 @@ namespace Usuarios.API.Controllers
         private readonly IUsuarioService _usuarioService;
         private readonly IPerfilService _perfilService;
 
-        public PerfilController(IUsuarioService usuarioService, ITokenService tokenService, IWebHostEnvironment environment, IPerfilService perfilService)
+        public PerfilController(IUsuarioService usuarioService, IPerfilService perfilService)
         {
             _usuarioService = usuarioService;
             _perfilService = perfilService;
