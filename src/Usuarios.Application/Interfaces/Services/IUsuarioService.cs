@@ -14,6 +14,9 @@ namespace Usuarios.Application.Interfaces.Services
         Task<UsuarioDTO> GetUsuarioById(Guid id);
         Task<UsuarioDTO> GetOrCreateUsuarioGoogleAsync(GoogleUsuarioInfoDTO dto);
         Task<PerfilUsuarioDTO> GetPerfilUsuarioByUsuarioId(Guid usuarioId);
+        Task<List<UsuarioResumenDTO>> ObtenerResumenesAsync(
+            List<Guid> usuariosIds,
+            CancellationToken cancellationToken = default);
 
     }
 }
