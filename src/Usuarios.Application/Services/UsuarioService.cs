@@ -104,6 +104,18 @@ namespace Usuarios.Application.Services
             return MapPerfilUsuarioDTO(usuario, preferencias, restricciones);
         }
 
+        public async Task<List<UsuarioResumenDTO>> ObtenerResumenesAsync(
+            List<Guid> usuariosIds,
+            CancellationToken cancellationToken = default)
+        {
+            if (usuariosIds.Count == 0)
+                return [];
+
+            return await _usuarioRepository.ObtenerResumenesAsync(
+                usuariosIds,
+                cancellationToken);
+        }
+
         // --- Helpers --- 
 
         private static PerfilUsuarioDTO MapPerfilUsuarioDTO(Usuario u, PreferenciasUsuario p, RestriccionesUsuario r)

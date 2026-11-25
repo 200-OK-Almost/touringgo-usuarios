@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Usuarios.Application.DTOs;
+using Usuarios.Application.DTOs.Usuarios;
 using Usuarios.Application.Interfaces.Repositories;
 using Usuarios.Domain.Entities;
 using Usuarios.Infrastructure.Data;
@@ -49,5 +50,23 @@ namespace Usuarios.Infrastructure.Repositories
         {
             await _context.SaveChangesAsync();
         }
+        public async Task<List<UsuarioResumenDTO>> ObtenerResumenesAsync(
+            IEnumerable<Guid> usuariosIds,
+            CancellationToken cancellationToken = default)
+        {
+            var ids = usuariosIds.Distinct().ToList();
+
+            return await _context.Usuarios
+                .AsNoTracking()
+                .Where(u => ids.Contains(u.Id))
+                .Select(u => new UsuarioResumenDTO
+                {
+                    Id = u.Id,
+                    Nombre = u.Nombre,
+                    FotoUrl = u.FotoUrl
+                })
+                .ToListAsync(cancellationToken);
+        }
+
     }
 }

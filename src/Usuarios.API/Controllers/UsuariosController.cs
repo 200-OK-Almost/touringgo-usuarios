@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Usuarios.Application.DTOs.Usuarios;
 using Usuarios.Application.Interfaces.Services;
+using Usuarios.Application.Services;
 namespace Usuarios.API.Controllers
 {
     [ApiController]
@@ -38,6 +40,18 @@ namespace Usuarios.API.Controllers
             var token = _tokenService.GenerateToken(usuario);
 
             return Ok(token);
+        }
+
+        [HttpPost("batch")]
+        public async Task<ActionResult<List<UsuarioResumenDTO>>> ObtenerPerfiles(
+            [FromBody] ObtenerUsuariosResumenRequest request,
+            CancellationToken cancellationToken)
+        {
+            var usuarios = await _usuarioService.ObtenerResumenesAsync(
+                request.UsuariosIds,
+                cancellationToken);
+
+            return Ok(usuarios);
         }
     }
 }
