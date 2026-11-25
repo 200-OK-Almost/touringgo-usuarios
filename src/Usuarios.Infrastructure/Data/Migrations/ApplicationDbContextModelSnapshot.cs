@@ -17,7 +17,7 @@ namespace Usuarios.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.33")
+                .HasAnnotation("ProductVersion", "8.0.34")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -181,6 +181,9 @@ namespace Usuarios.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("CompletoEncuesta")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
@@ -213,6 +216,7 @@ namespace Usuarios.Infrastructure.Data.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
+                            CompletoEncuesta = false,
                             Email = "usuario@test.com",
                             FechaCreacion = new DateTimeOffset(new DateTime(2026, 10, 8, 12, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             GoogleId = "user-test-google-id",
@@ -222,6 +226,7 @@ namespace Usuarios.Infrastructure.Data.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111112"),
+                            CompletoEncuesta = false,
                             Email = "dev@test.com",
                             FechaCreacion = new DateTimeOffset(new DateTime(2026, 10, 8, 12, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             GoogleId = "dev-test-google-id",

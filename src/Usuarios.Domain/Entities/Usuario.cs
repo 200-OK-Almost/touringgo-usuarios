@@ -17,6 +17,7 @@ namespace Usuarios.Domain.Entities
         public DateTimeOffset FechaCreacion { get; set; } = DateTimeOffset.UtcNow;
 
         public DateTimeOffset UltimoAcceso { get; set; }
+        public bool CompletoEncuesta { get; set; } = false;
         public PreferenciasUsuario? Preferencias { get; set; }
     }
 }

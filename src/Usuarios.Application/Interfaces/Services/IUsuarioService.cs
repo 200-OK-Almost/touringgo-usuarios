@@ -17,6 +17,6 @@ namespace Usuarios.Application.Interfaces.Services
         Task<List<UsuarioResumenDTO>> ObtenerResumenesAsync(
             List<Guid> usuariosIds,
             CancellationToken cancellationToken = default);
-
+        Task CompletarEncuestaAsync(Guid usuarioId);
     }
 }

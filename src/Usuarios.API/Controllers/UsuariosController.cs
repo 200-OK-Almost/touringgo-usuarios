@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Usuarios.Application.DTOs.Usuarios;
 using Usuarios.Application.Interfaces.Services;
@@ -52,6 +53,20 @@ namespace Usuarios.API.Controllers
                 cancellationToken);
 
             return Ok(usuarios);
+        }
+
+        [Authorize(Policy = "RequiereUsuarioId")]
+        [HttpPatch("me/encuesta")]
+        public async Task<IActionResult> CompletarEncuesta()
+        {
+            var userIdValue = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!Guid.TryParse(userIdValue, out var userId))
+                return Unauthorized();
+
+            await _usuarioService.CompletarEncuestaAsync(userId);
+
+            return NoContent();
         }
     }
 }

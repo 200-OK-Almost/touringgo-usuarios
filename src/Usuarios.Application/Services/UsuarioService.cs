@@ -116,6 +116,18 @@ namespace Usuarios.Application.Services
                 cancellationToken);
         }
 
+        public async Task CompletarEncuestaAsync(Guid usuarioId)
+        {
+            var usuario = await _usuarioRepository.GetUsuarioById(usuarioId);
+
+            if (usuario is null)
+                throw new NotFoundException("Usuario no encontrado");
+
+            usuario.CompletoEncuesta = true;
+
+            await _usuarioRepository.SaveChangesAsync();
+        }
+
         // --- Helpers --- 
 
         private static PerfilUsuarioDTO MapPerfilUsuarioDTO(Usuario u, PreferenciasUsuario p, RestriccionesUsuario r)
@@ -139,6 +151,7 @@ namespace Usuarios.Application.Services
                 FotoUrl = u.FotoUrl,
                 FechaCreacion = u.FechaCreacion,
                 UltimoAcceso = u.UltimoAcceso,
+                CompletoEncuesta = u.CompletoEncuesta
             };
         }
 
