@@ -78,21 +78,21 @@ namespace Usuarios.Infrastructure.Data
                     Id = Guid.Parse("44444444-4444-4444-4444-444444444441"),
                     PreferenciasUsuarioId = preferenciasUsuarioTestId,
                     CategoriaCodigo = "museos_galerias",
-                    Afinidad = 5
+                    Afinidad = 2
                 },
                 new PreferenciasCategoria
                 {
                     Id = Guid.Parse("44444444-4444-4444-4444-444444444442"),
                     PreferenciasUsuarioId = preferenciasUsuarioTestId,
                     CategoriaCodigo = "gastronomia_clasica",
-                    Afinidad = 4
+                    Afinidad = 1
                 },
                 new PreferenciasCategoria
                 {
                     Id = Guid.Parse("44444444-4444-4444-4444-444444444443"),
                     PreferenciasUsuarioId = preferenciasUsuarioTestId,
                     CategoriaCodigo = "parques_aire_libre",
-                    Afinidad = 3
+                    Afinidad = 0
                 },
 
                 // Dev Test: afinidad alta por parques, bares y museos.
@@ -101,14 +101,14 @@ namespace Usuarios.Infrastructure.Data
                     Id = Guid.Parse("44444444-4444-4444-4444-444444444444"),
                     PreferenciasUsuarioId = preferenciasDevTestId,
                     CategoriaCodigo = "parques_aire_libre",
-                    Afinidad = 5
+                    Afinidad = 2
                 },
                 new PreferenciasCategoria
                 {
                     Id = Guid.Parse("44444444-4444-4444-4444-444444444445"),
                     PreferenciasUsuarioId = preferenciasDevTestId,
                     CategoriaCodigo = "bares_vermu",
-                    Afinidad = 4
+                    Afinidad = 1
                 },
                 new PreferenciasCategoria
                 {

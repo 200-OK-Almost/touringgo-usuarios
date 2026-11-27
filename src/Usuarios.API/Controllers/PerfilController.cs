@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Usuarios.Application.DTOs.Perfil;
 using Usuarios.Application.DTOs.Preferencias;
 using Usuarios.Application.DTOs.Restricciones;
 using Usuarios.Application.Interfaces.Services;
@@ -51,6 +52,20 @@ namespace Usuarios.API.Controllers
                 return NotFound();
 
             return Ok(usuarioPerfil);
+        }
+        [Authorize(Policy = "RequiereUsuarioId")]
+        [HttpPut("perfil")]
+        public async Task<IActionResult> ActualizarPerfil(
+            [FromBody] ActualizarPerfilUsuarioDTO dto)
+        {
+            var claim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!Guid.TryParse(claim, out var usuarioId))
+                return Unauthorized();
+
+            await _perfilService.ActualizarPerfilByUsuarioId(usuarioId, dto);
+
+            return NoContent();
         }
 
         [HttpPatch("preferencias")]

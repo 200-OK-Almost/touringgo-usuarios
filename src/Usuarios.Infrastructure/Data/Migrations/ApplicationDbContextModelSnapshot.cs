@@ -49,35 +49,35 @@ namespace Usuarios.Infrastructure.Data.Migrations
                         new
                         {
                             Id = new Guid("44444444-4444-4444-4444-444444444441"),
-                            Afinidad = 5,
+                            Afinidad = 2,
                             CategoriaCodigo = "museos_galerias",
                             PreferenciasUsuarioId = new Guid("22222222-2222-2222-2222-222222222221")
                         },
                         new
                         {
                             Id = new Guid("44444444-4444-4444-4444-444444444442"),
-                            Afinidad = 4,
+                            Afinidad = 1,
                             CategoriaCodigo = "gastronomia_clasica",
                             PreferenciasUsuarioId = new Guid("22222222-2222-2222-2222-222222222221")
                         },
                         new
                         {
                             Id = new Guid("44444444-4444-4444-4444-444444444443"),
-                            Afinidad = 3,
+                            Afinidad = 0,
                             CategoriaCodigo = "parques_aire_libre",
                             PreferenciasUsuarioId = new Guid("22222222-2222-2222-2222-222222222221")
                         },
                         new
                         {
                             Id = new Guid("44444444-4444-4444-4444-444444444444"),
-                            Afinidad = 5,
+                            Afinidad = 2,
                             CategoriaCodigo = "parques_aire_libre",
                             PreferenciasUsuarioId = new Guid("22222222-2222-2222-2222-222222222222")
                         },
                         new
                         {
                             Id = new Guid("44444444-4444-4444-4444-444444444445"),
-                            Afinidad = 4,
+                            Afinidad = 1,
                             CategoriaCodigo = "bares_vermu",
                             PreferenciasUsuarioId = new Guid("22222222-2222-2222-2222-222222222222")
                         },

@@ -10,6 +10,7 @@ using Usuarios.Application.DTOs.Restricciones;
 using Usuarios.Application.DTOs.Usuarios;
 using Usuarios.Application.Interfaces.Repositories;
 using Usuarios.Application.Interfaces.Services;
+using Usuarios.Domain;
 using Usuarios.Domain.Entities;
 using Usuarios.Domain.Enums;
 using Usuarios.Domain.Exceptions;
@@ -55,16 +56,23 @@ namespace Usuarios.Application.Services
 
                 await _usuarioRepository.Add(usuario);
 
-                // los valores por defecto están definidos en las entidades
+                // los demás valores por defecto están definidos en las entidades
                 var preferencias = new PreferenciasUsuario
                 {
-                    UsuarioId = usuario.Id
-                };
+                    UsuarioId = usuario.Id,
+                    Categorias = CategoriasLugar.Codigos
+                    .Select(codigo => new PreferenciasCategoria
+                    {
+                        CategoriaCodigo = codigo,
+                        Afinidad = 0
+                    })
+                    .ToList()
+                    };
+
                 var restricciones = new RestriccionesUsuario
                 {
                     UsuarioId = usuario.Id
-                }
-                ;
+                };
                 await _preferenciasRepository.Add(preferencias);
                 await _restriccionesRepository.Add(restricciones);
             } else

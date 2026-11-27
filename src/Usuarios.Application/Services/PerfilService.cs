@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Usuarios.Application.DTOs.Perfil;
 using Usuarios.Application.DTOs.Preferencias;
 using Usuarios.Application.DTOs.Restricciones;
 using Usuarios.Application.Interfaces.Repositories;
@@ -73,8 +74,8 @@ namespace Usuarios.Application.Services
                         !CategoriasLugar.Codigos.Contains(preferenciaCategoria.CategoriaCodigo))
                         throw new DominioException($"El código de categoría '{preferenciaCategoria.CategoriaCodigo}' no es válido.");
 
-                    if (preferenciaCategoria.Afinidad < 1 || preferenciaCategoria.Afinidad > 5)
-                        throw new DominioException($"El valor de afinidad para una categoría debe estar entre 1 y 5");
+                    if (preferenciaCategoria.Afinidad < -2 || preferenciaCategoria.Afinidad > 2)
+                        throw new DominioException($"El valor de afinidad para una categoría debe estar entre -2 y 2");
 
                     var existente = preferencias.Categorias
                         .FirstOrDefault(c => c.CategoriaCodigo == preferenciaCategoria.CategoriaCodigo);
@@ -134,6 +135,109 @@ namespace Usuarios.Application.Services
 
             return MapRestriccionesUsuarioDTO(restricciones);
         }
+
+        public async Task ActualizarPerfilByUsuarioId(
+            Guid usuarioId,
+            ActualizarPerfilUsuarioDTO dto)
+        {
+            var preferencias = await _preferenciasRepository.GetByUsuarioId(usuarioId);
+            var restricciones = await _restriccionesRepository.GetByUsuarioId(usuarioId);
+
+            if (preferencias is null)
+                throw new NotFoundException(
+                    $"Preferencias del usuario con ID {usuarioId} no encontradas");
+
+            if (restricciones is null)
+                throw new NotFoundException(
+                    $"Restricciones del usuario con ID {usuarioId} no encontradas");
+
+            // Validaciones
+            ValidarPreferenciasPerfil(dto.Preferencias);
+            ValidarRestriccionesPerfil(dto.Restricciones);
+
+            // Actualizar preferencias generales
+            preferencias.RitmoVisitaPreferido =
+                dto.Preferencias.RitmoVisitaPreferido;
+
+            preferencias.TransportesPreferidos =
+                dto.Preferencias.TransportesPreferidos;
+
+            // Actualizar afinidades
+            foreach (var categoriaDto in dto.Preferencias.Categorias)
+            {
+                var existente = preferencias.Categorias
+                    .First(c => c.CategoriaCodigo == categoriaDto.CategoriaCodigo);
+
+                existente.Afinidad = categoriaDto.Afinidad;
+            }
+
+            // Actualizar restricciones
+            restricciones.Dieta = dto.Restricciones.Dieta;
+            restricciones.RequiereRecorridoSinEscalones =
+                dto.Restricciones.RequiereRecorridoSinEscalones;
+            restricciones.RequiereBanoAccesible =
+                dto.Restricciones.RequiereBanoAccesible;
+
+            await _preferenciasRepository.SaveChangesAsync();
+        }
+        // --- Validaciones ---
+
+        private static void ValidarPreferenciasPerfil(
+            ActualizarPreferenciasPerfilDTO dto)
+        {
+            if (!Enum.IsDefined(typeof(RitmoVisita), dto.RitmoVisitaPreferido))
+                throw new DominioException("El ritmo de visita no es válido.");
+
+            if (dto.TransportesPreferidos is null ||
+                dto.TransportesPreferidos.Count == 0)
+                throw new DominioException(
+                    "Debe existir al menos un método de transporte preferido.");
+
+            if (dto.TransportesPreferidos.Any(
+                t => !Enum.IsDefined(typeof(TipoTransporte), t)))
+                throw new DominioException(
+                    "Uno o más tipos de transporte no son válidos.");
+
+            if (dto.Categorias is null)
+                throw new DominioException("Las categorías son obligatorias.");
+
+            foreach (var categoria in dto.Categorias)
+            {
+                if (string.IsNullOrWhiteSpace(categoria.CategoriaCodigo) ||
+                    !CategoriasLugar.Codigos.Contains(categoria.CategoriaCodigo))
+                    throw new DominioException(
+                        $"El código de categoría '{categoria.CategoriaCodigo}' no es válido.");
+
+                if (categoria.Afinidad < -2 || categoria.Afinidad > 2)
+                    throw new DominioException(
+                        "El valor de afinidad debe estar entre -2 y 2.");
+            }
+
+            // Exigir exactamente las categorías definidas en el dominio.
+            var codigosRecibidos = dto.Categorias
+                .Select(c => c.CategoriaCodigo)
+                .ToList();
+
+            if (codigosRecibidos.Distinct().Count() != codigosRecibidos.Count ||
+                !CategoriasLugar.Codigos.ToHashSet()
+                    .SetEquals(codigosRecibidos))
+            {
+                throw new DominioException(
+                    "Debe enviarse exactamente una preferencia por cada categoría.");
+            }
+        }
+
+        private static void ValidarRestriccionesPerfil(
+            ActualizarRestriccionesPerfilDTO dto)
+        {
+            if (dto.Dieta is null)
+                throw new DominioException("La lista de dietas es obligatoria.");
+
+            if (dto.Dieta.Any(d => !Enum.IsDefined(typeof(TipoDieta), d)))
+                throw new DominioException(
+                    "Uno o más tipos de dieta no son válidos.");
+        }
+
 
         // --- Helpers --- 
 
