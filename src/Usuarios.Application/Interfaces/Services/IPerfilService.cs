@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Usuarios.Application.DTOs.Perfil;
 using Usuarios.Application.DTOs.Preferencias;
 using Usuarios.Application.DTOs.Restricciones;
 
@@ -12,12 +13,14 @@ namespace Usuarios.Application.Interfaces.Services
     {
         Task<PreferenciasUsuarioDTO> ActualizarPreferenciasByUsuarioId(
             Guid usuarioId, 
-            ActualizarPreferenciasUsuarioDTO dto
-        );
+            ActualizarPreferenciasUsuarioDTO dto);
 
         Task<RestriccionesUsuarioDTO> ActualizarRestriccionesByUsuarioId(
             Guid usuarioId, 
-            ActualizarRestriccionesUsuarioDTO dto
-        );
+            ActualizarRestriccionesUsuarioDTO dto);
+
+        public Task ActualizarPerfilByUsuarioId(
+            Guid usuarioId,
+            ActualizarPerfilUsuarioDTO dto);
     }
 }

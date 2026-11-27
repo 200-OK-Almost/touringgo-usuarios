@@ -31,8 +31,9 @@ namespace Usuarios.Infrastructure.Repositories
         public async Task<PreferenciasUsuario?> GetByUsuarioId(Guid usuarioId)
         {
             return await _context.PreferenciasUsuarios
+                .AsTracking()
                 .Where(p => p.UsuarioId == usuarioId)
-                .Include(p => p.Categorias)
+                .Include(p => p.Categorias.OrderBy(c => c.CategoriaCodigo))
                 .FirstOrDefaultAsync();
         }
 

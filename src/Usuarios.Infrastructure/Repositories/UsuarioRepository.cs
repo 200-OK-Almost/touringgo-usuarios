@@ -28,6 +28,7 @@ namespace Usuarios.Infrastructure.Repositories
         public async Task<Usuario?> GetUsuarioById(Guid id)
         {
             return await _context.Usuarios
+                .AsTracking()
                 .Where(u => u.Id == id)
                 .FirstOrDefaultAsync();
         }

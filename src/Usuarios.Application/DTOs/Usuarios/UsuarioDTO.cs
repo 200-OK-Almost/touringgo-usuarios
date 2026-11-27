@@ -16,5 +16,6 @@ namespace Usuarios.Application.DTOs.Usuarios
         public string? FotoUrl { get; set; }
         public DateTimeOffset FechaCreacion { get; set; }
         public DateTimeOffset UltimoAcceso { get; set; }
+        public bool CompletoEncuesta { get; set; }
     }
 }
